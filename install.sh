@@ -95,10 +95,18 @@ if [ "$UNINSTALL" -eq 1 ]; then
     src="${src%/}"
     name="$(basename "$src")"
     [ "$name" = "knowledge" ] && continue
+    [ "$name" = "notebooklm" ] && continue
     unlink_one "$src" "$SKILLS_DIR/$name"
   done
   echo "Knowledge skills:"
   for src in "$ECO_ROOT"/skills/knowledge/*/; do
+    [ -d "$src" ] || continue
+    src="${src%/}"
+    name="$(basename "$src")"
+    unlink_one "$src" "$SKILLS_DIR/$name"
+  done
+  echo "NotebookLM skills:"
+  for src in "$ECO_ROOT"/skills/notebooklm/*/; do
     [ -d "$src" ] || continue
     src="${src%/}"
     name="$(basename "$src")"
@@ -122,14 +130,24 @@ for src in "$ECO_ROOT"/skills/*/; do
   [ -d "$src" ] || continue
   src="${src%/}"
   name="$(basename "$src")"
-  # Skip the knowledge namespace folder — its sub-skills are linked individually below.
+  # Skip namespace folders — their sub-skills are linked individually below.
   [ "$name" = "knowledge" ] && continue
+  [ "$name" = "notebooklm" ] && continue
   link_one "$src" "$SKILLS_DIR/$name"
 done
 echo
 
 echo "Knowledge skills (auto-activating) -> $SKILLS_DIR"
 for src in "$ECO_ROOT"/skills/knowledge/*/; do
+  [ -d "$src" ] || continue
+  src="${src%/}"
+  name="$(basename "$src")"
+  link_one "$src" "$SKILLS_DIR/$name"
+done
+echo
+
+echo "NotebookLM skills -> $SKILLS_DIR"
+for src in "$ECO_ROOT"/skills/notebooklm/*/; do
   [ -d "$src" ] || continue
   src="${src%/}"
   name="$(basename "$src")"

@@ -21,12 +21,29 @@ cd ~/sourceControl/claude-development-eco-system && ./install.sh
 | `/ui-ux-pro-max` | UI/UX design intelligence — 67 styles, 96 palettes, 57 font pairings, 25 chart types, 13 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui). Covers design, build, review, and improve actions for any UI artifact. |
 | `/remotion` | Remotion video composition reference — rules for animations, timing, sequencing, text effects, transitions, audio, captions, 3D, fonts, charts, Lottie, maps, and more. Load the relevant rule file on demand for the task at hand. |
 | `/lighthouse` | Lighthouse CI setup and performance diagnosis for Vite/React SPAs. Covers render-blocking fonts, LCP/hero image fixes, JS bundle splitting, RTL screenshot testing. |
+| `/react-refactor` | React component refactoring guidance — patterns for splitting large components, extracting hooks, simplifying state, and aligning with project conventions. |
+| `/remotion-product-demo` | Remotion-specific workflow for building product demo videos — scene structure, timing, branding, and delivery checklist. |
+| `/team-builder` | Build and configure Claude Code agent teams — define roles, write prompts, wire team.json, and scaffold the folder structure. |
+| `/product-research-team` | Run the full product research workflow using the Elite Product Research Team — CPO decomposes brief, two researchers investigate in parallel, two PMs synthesize into a CPO-approved requirements doc. |
 | `/learn` | Multi-session codebase onboarding. Builds a personal architecture map, extracts conventions from recent merged PRs, identifies hot-spot files, drafts a project-specific CLAUDE.md. Resumable across sessions. |
 | `/done` | Close-out a finished task — stamps `done_at` + `actual_hours`, appends a calibration row to the per-repo velocity log, archives the plan file. |
 | `/feature` | End-to-end feature loop (phases Frame → Map → Plan → Branch → Build → Ship → Review). Drives the 5-role gate workflow internally. Supports `--jira`, `--no-pr`, `--resume`. |
 | `/quick-fix` | Compressed hotfix path — CTO → joint Architect+Wiring scan → Implementor → Code Reviewer. Single-round gates, no Jira, no PR auto-open. Bails to `/dev-roles` if the scan shows bigger scope. |
 | `/task-timing` | Auto-fires alongside any skill that drives `TaskCreate`/`TaskUpdate`. Stamps start/end on every gate transition, emits a markdown timing table (task → elapsed → estimate vs actual) at workflow end. |
 | HeyGen skills | Multi-skill library for HeyGen AI video — prompt-based creation, avatar/scene control (v2 API), visual-style design systems, TTS audio, video translation. Loaded via `@`-include in `~/sourceControl/CLAUDE.md`; individual sub-skills at `skills/heygen/skills/*/SKILL.md`. |
+
+### NotebookLM presentation skills (`skills/notebooklm/`)
+
+These fire when explicitly invoked via `/nlm-*`. Focused on turning research or content into polished NotebookLM artifacts.
+
+| Skill | What it does |
+|---|---|
+| `/nlm-deck` | Build a slide deck in NotebookLM from source material — structures content into sections, writes slide copy, and exports. |
+| `/nlm-infographic` | Generate a visual infographic from research or notes — key stats, flow diagrams, visual summaries. |
+| `/nlm-source-prep` | Prepare and format raw sources for NotebookLM ingestion — cleans, structures, and deduplicates before upload. |
+| `/nlm-video` | Create a video script and storyboard from NotebookLM content — narration, scene cues, timing. |
+
+---
 
 ### Auto-activating knowledge skills (`skills/knowledge/`)
 
