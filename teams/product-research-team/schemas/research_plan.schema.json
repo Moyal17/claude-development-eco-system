@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "research_plan.schema.json",
+  "title": "Research Plan",
+  "description": "A researcher's plan submitted to the CPO for approval before research begins",
+  "type": "object",
+  "required": ["brief_id", "researcher_id", "plan_version", "revision", "assignment_summary", "research_questions", "methods", "sources_plan", "scope_boundaries", "expected_outputs", "diagram_plan"],
+  "additionalProperties": false,
+  "properties": {
+    "brief_id": {
+      "type": "string",
+      "pattern": "^BRIEF-[0-9]+$"
+    },
+    "researcher_id": {
+      "type": "string",
+      "enum": ["researcher_1", "researcher_2"]
+    },
+    "plan_version": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp used as version identifier"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Increments on each resubmission after CPO rejection"
+    },
+    "assignment_summary": {
+      "type": "string",
+      "description": "One paragraph restating focus and primary questions in the researcher's own words",
+      "minLength": 50
+    },
+    "research_questions": {
+      "type": "array",
+      "description": "Every specific question the researcher will pursue",
+      "minItems": 3,
+      "items": { "type": "string", "minLength": 15 }
+    },
+    "methods": {
+      "type": "array",
+      "description": "For each research question, the method and rationale",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["question", "method", "rationale"],
+        "properties": {
+          "question": { "type": "string" },
+          "method": {
+            "type": "string",
+            "enum": [
+              "desk_research",
+              "competitive_analysis",
+              "user_behavior_analysis",
+              "workflow_reconstruction",
+              "mental_model_mapping",
+              "edge_case_enumeration",
+              "review_mining",
+              "community_forum_analysis",
+              "documentation_analysis",
+              "feature_comparison"
+            ]
+          },
+          "rationale": { "type": "string" }
+        }
+      }
+    },
+    "sources_plan": {
+      "type": "array",
+      "description": "Specific types of sources to consult",
+      "minItems": 2,
+      "items": { "type": "string" }
+    },
+    "scope_boundaries": {
+      "type": "object",
+      "required": ["in_scope", "out_of_scope"],
+      "properties": {
+        "in_scope": { "type": "string" },
+        "out_of_scope": { "type": "string" }
+      }
+    },
+    "expected_outputs": {
+      "type": "array",
+      "description": "Every artifact the researcher will produce",
+      "minItems": 2,
+      "items": { "type": "string" }
+    },
+    "diagram_plan": {
+      "type": "array",
+      "description": "Each Mermaid diagram planned, with type and subject",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "depicts"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["flowchart", "journey", "sequence", "quadrantChart", "timeline", "mindmap", "gitGraph"]
+          },
+          "depicts": { "type": "string" },
+          "persona": { "type": "string" },
+          "title": { "type": "string" }
+        }
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["risk", "mitigation"],
+        "properties": {
+          "risk": { "type": "string" },
+          "mitigation": { "type": "string" }
+        }
+      }
+    },
+    "cross_consultations": {
+      "type": "array",
+      "description": "Any CPO questions asked and answered before submitting the plan",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" }
+        }
+      }
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

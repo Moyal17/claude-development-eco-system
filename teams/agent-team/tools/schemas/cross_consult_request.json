@@ -1,0 +1,43 @@
+{
+  "name": "cross_consult_request",
+  "description": "Request an architectural opinion from the architect. Available to implementors, code_reviewer, and wiring_expert at any point during a task. The workflow does not pause, but the question must be answered before the agent proceeds past the point of ambiguity.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "from", "question", "context"],
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "from": {
+        "type": "string",
+        "enum": ["implementor_1", "implementor_2", "code_reviewer", "wiring_expert"],
+        "description": "Agent ID submitting the consultation request"
+      },
+      "question": {
+        "type": "string",
+        "description": "Specific, context-rich architectural question",
+        "minLength": 20
+      },
+      "context": {
+        "type": "string",
+        "description": "Relevant code snippets, file paths, or constraints the architect needs to answer accurately",
+        "minLength": 10
+      },
+      "urgency": {
+        "type": "string",
+        "enum": ["blocking", "non-blocking"],
+        "description": "blocking = agent cannot proceed without the answer; non-blocking = agent can continue but needs the answer before the next stage transition",
+        "default": "blocking"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean", "const": true },
+      "consultation_id": { "type": "string" },
+      "message": { "type": "string" }
+    }
+  }
+}

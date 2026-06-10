@@ -1,0 +1,68 @@
+{
+  "name": "findings_submit",
+  "description": "Researcher submits completed research findings to the team. Both researchers must submit before PMs can begin requirements drafting.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "researcher_id", "plan_version", "document_path", "key_findings_summary", "diagrams_produced"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "researcher_id": {
+        "type": "string",
+        "enum": ["researcher_1", "researcher_2"]
+      },
+      "plan_version": {
+        "type": "string",
+        "description": "The approved plan version this findings document is based on"
+      },
+      "document_path": {
+        "type": "string",
+        "description": "Path to the complete research findings Markdown document"
+      },
+      "key_findings_summary": {
+        "type": "array",
+        "description": "Top 3-10 findings in one sentence each",
+        "minItems": 3,
+        "items": { "type": "string" }
+      },
+      "diagrams_produced": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "type": "string" }
+      },
+      "edge_cases_count": { "type": "integer", "minimum": 0 },
+      "competitors_analyzed": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "the_extra_edge": {
+        "type": "string",
+        "description": "researcher_2 only: One sentence on the unique differentiating opportunity"
+      },
+      "cross_consultations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "question": { "type": "string" },
+            "answer": { "type": "string" }
+          }
+        }
+      },
+      "open_questions": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean", "const": true },
+      "both_researchers_submitted": { "type": "boolean" },
+      "message": { "type": "string" }
+    }
+  }
+}

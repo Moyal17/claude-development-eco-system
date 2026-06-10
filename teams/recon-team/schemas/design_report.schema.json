@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design-report.schema.json",
+  "title": "Design Report",
+  "description": "Design system specification extracted from the target product",
+  "type": "object",
+  "required": ["report_type", "task_id", "submitted_by", "target", "sections", "sources", "submitted_at"],
+  "properties": {
+    "report_type": {
+      "type": "string",
+      "const": "design_report"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^RECON-[0-9]+$"
+    },
+    "submitted_by": {
+      "type": "string",
+      "const": "design_analyst"
+    },
+    "target": { "type": "string" },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
+    "sections": {
+      "type": "object",
+      "required": ["design_essence", "color_system", "typography", "spacing", "borders_and_elevation", "components", "layout", "animations", "tech_stack_detected", "packages_to_replicate"],
+      "properties": {
+        "design_essence": { "type": "object" },
+        "color_system": { "type": "object" },
+        "typography": { "type": "object" },
+        "spacing": { "type": "object" },
+        "borders_and_elevation": { "type": "object" },
+        "components": { "type": "array" },
+        "layout": { "type": "object" },
+        "animations": { "type": "array" },
+        "tech_stack_detected": { "type": "object" },
+        "packages_to_replicate": { "type": "array" }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["url", "description"],
+        "properties": {
+          "url": { "type": "string" },
+          "description": { "type": "string" },
+          "accessed_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "submitted_at": { "type": "string", "format": "date-time" }
+  }
+}

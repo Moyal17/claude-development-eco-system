@@ -1,0 +1,170 @@
+# claude-pr-review.yml — runs Claude on the PR diff and posts review comments.
+#
+# Source: claude-development-eco-system templates. Copy into <target-repo>/.github/workflows/.
+#
+# Required repo secrets:
+#   - ANTHROPIC_API_KEY  (Anthropic Console → Settings → Keys)
+#
+# Optional repo secrets:
+#   - CLAUDE_REVIEW_MODEL   (default: claude-sonnet-4-6)
+#   - CLAUDE_REVIEW_PROMPT  (override the default prompt; see code below)
+#
+# This workflow runs on PR open / sync / ready-for-review. It:
+#   1. Fetches the PR diff against the base branch
+#   2. Sends the diff to Claude with a code-review prompt scoped to the team's standards
+#   3. Posts the review as a single PR comment (not line-by-line, to avoid spam)
+#   4. Sets the PR's status check to "success" (advisory only — never blocks merge)
+
+name: Claude PR review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compute diff
+        id: diff
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          # Cap diff size so we don't blow the model's context.
+          # 200KB ≈ ~50K tokens; large PRs get truncated with a notice.
+          git diff --no-color "$BASE_SHA" "$HEAD_SHA" > /tmp/pr.diff || true
+          BYTES=$(wc -c < /tmp/pr.diff)
+          echo "diff_bytes=$BYTES" >> $GITHUB_OUTPUT
+          if [ "$BYTES" -gt 200000 ]; then
+            head -c 200000 /tmp/pr.diff > /tmp/pr.diff.trunc
+            echo "" >> /tmp/pr.diff.trunc
+            echo "[--- diff truncated to first 200KB; full diff is ${BYTES} bytes ---]" >> /tmp/pr.diff.trunc
+            mv /tmp/pr.diff.trunc /tmp/pr.diff
+          fi
+
+      - name: Read plan file (if any)
+        id: plan
+        run: |
+          set -euo pipefail
+          # Find the plan file referenced in the PR body via "Jira-Ticket: KEY".
+          # The plan file is typically docs/plans/<slug>.md and is included in the diff.
+          # We surface the plan's Brief + Approach to ground the review.
+          PR_BODY=$(jq -r '.pull_request.body // ""' "$GITHUB_EVENT_PATH")
+          SLUG_FILE=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" \
+            | grep -E '^docs/plans/[^/]+\.md$' | head -n 1 || true)
+          if [ -n "$SLUG_FILE" ] && [ -f "$SLUG_FILE" ]; then
+            echo "plan_file=$SLUG_FILE" >> $GITHUB_OUTPUT
+            cp "$SLUG_FILE" /tmp/plan.md
+          else
+            echo "plan_file=" >> $GITHUB_OUTPUT
+            echo "" > /tmp/plan.md
+          fi
+
+      - name: Call Claude
+        id: review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODEL: ${{ secrets.CLAUDE_REVIEW_MODEL || 'claude-sonnet-4-6' }}
+          OVERRIDE_PROMPT: ${{ secrets.CLAUDE_REVIEW_PROMPT }}
+        run: |
+          set -euo pipefail
+          python3 << 'PYEOF' > /tmp/review.md
+          import json, os, urllib.request, sys
+
+          api_key = os.environ["ANTHROPIC_API_KEY"]
+          model = os.environ.get("MODEL", "claude-sonnet-4-6")
+          override = os.environ.get("OVERRIDE_PROMPT", "").strip()
+
+          diff = open("/tmp/pr.diff", encoding="utf-8", errors="replace").read()
+          plan = open("/tmp/plan.md", encoding="utf-8", errors="replace").read()
+
+          default_prompt = """You are a senior engineer doing a PR review. Apply the team's review standards (production-incident-informed; auth, injection, concurrency, data integrity, error handling, API design, crypto, types, testing).
+
+Output a structured review with these sections:
+
+## Summary
+One sentence — does this PR ship as-is, ship with notes, or need changes?
+
+## Findings
+Group by severity: CRITICAL / HIGH / MEDIUM / LOW. For each finding give file:line + the issue + the suggested fix in <= 2 sentences. Skip severities with no findings.
+
+## Positive patterns
+What was done well. Specific, not generic.
+
+## Verdict
+APPROVE / APPROVE-WITH-NOTES / REQUEST-CHANGES
+
+Be direct. Do not pad. Do not hedge. If the diff has no issues, say so clearly."""
+
+          system = override if override else default_prompt
+
+          user_msg = f"""Plan file (provides context — Brief, Approach, Tasks):
+
+{plan[:8000]}
+
+PR diff:
+
+```diff
+{diff}
+```"""
+
+          payload = {
+              "model": model,
+              "max_tokens": 4096,
+              "system": system,
+              "messages": [{"role": "user", "content": user_msg}],
+          }
+
+          req = urllib.request.Request(
+              "https://api.anthropic.com/v1/messages",
+              data=json.dumps(payload).encode("utf-8"),
+              headers={
+                  "x-api-key": api_key,
+                  "anthropic-version": "2023-06-01",
+                  "content-type": "application/json",
+              },
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=120) as resp:
+                  data = json.loads(resp.read())
+          except Exception as e:
+              print(f"## Claude review failed\n\n{e}", flush=True)
+              sys.exit(0)
+
+          for block in data.get("content", []):
+              if block.get("type") == "text":
+                  print(block["text"])
+          PYEOF
+
+      - name: Post review as PR comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          PR_NUM="${{ github.event.pull_request.number }}"
+          BODY=$(printf '🤖 **Claude code review** (advisory; does not block merge)\n\n%s\n\n---\n_Run by `claude-pr-review.yml` on commit `%s`_\n' \
+            "$(cat /tmp/review.md)" \
+            "${{ github.event.pull_request.head.sha }}")
+          gh pr comment "$PR_NUM" --body "$BODY"

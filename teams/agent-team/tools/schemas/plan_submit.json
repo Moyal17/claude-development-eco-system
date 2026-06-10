@@ -1,0 +1,27 @@
+{
+  "name": "plan_submit",
+  "description": "Submit an implementation plan to the architect for approval. Must be called before any code is written. The workflow will block until the architect responds with plan_approve or plan_reject.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "plan"],
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "description": "The task ID this plan belongs to",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "plan": {
+        "$ref": "../../schemas/plan.schema.json",
+        "description": "The full implementation plan object"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean" },
+      "plan_version": { "type": "string" },
+      "message": { "type": "string" }
+    }
+  }
+}

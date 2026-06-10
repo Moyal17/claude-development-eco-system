@@ -1,0 +1,284 @@
+{
+  "$schema": "https://your-org/recon-team-schema/v1",
+  "team": {
+    "name": "Elite Recon Team",
+    "version": "1.0.0",
+    "description": "Multi-agent product reconnaissance team with cross-challenge gates, dual advisory roles, and Research Director oversight for competitive intelligence and go/no-go decisions"
+  },
+
+  "agents": {
+    "research_director": {
+      "id": "research_director",
+      "role": "Research Director",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/research_director.md",
+      "tools": [
+        "task_create",
+        "task_assign",
+        "task_status",
+        "report_request",
+        "final_verdict"
+      ],
+      "responsibilities": [
+        "Decompose user recon requests into discrete research tasks using tasks/decomposition.md",
+        "Assign tasks to the appropriate specialist",
+        "Monitor workflow state across all active tasks",
+        "Enforce the gate protocol — no report ships unchallenged",
+        "Hear Devil's Advocate and Realist Angel perspectives",
+        "Produce final go/no-go recommendation with personal commentary",
+        "Ask user pre-recon questions before each new target"
+      ]
+    },
+
+    "web_researcher": {
+      "id": "web_researcher",
+      "role": "Web Researcher",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/web_researcher.md",
+      "tools": [
+        "web_fetch",
+        "web_search",
+        "report_submit",
+        "cross_challenge_respond"
+      ],
+      "report_type": "web_research_report",
+      "challenged_by": ["market_researcher", "technical_architect"]
+    },
+
+    "market_researcher": {
+      "id": "market_researcher",
+      "role": "Market Researcher",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/market_researcher.md",
+      "tools": [
+        "web_search",
+        "web_fetch",
+        "report_submit",
+        "cross_challenge_respond"
+      ],
+      "report_type": "market_research_report",
+      "challenged_by": ["web_researcher", "product_analyst"]
+    },
+
+    "design_analyst": {
+      "id": "design_analyst",
+      "role": "Design Analyst",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/design_analyst.md",
+      "tools": [
+        "web_fetch",
+        "web_search",
+        "report_submit",
+        "cross_challenge_respond"
+      ],
+      "report_type": "design_report",
+      "challenged_by": ["technical_architect"]
+    },
+
+    "technical_architect": {
+      "id": "technical_architect",
+      "role": "Technical Architect",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/technical_architect.md",
+      "tools": [
+        "web_fetch",
+        "web_search",
+        "report_submit",
+        "cross_challenge_request",
+        "cross_challenge_respond"
+      ],
+      "report_type": "technical_architecture_report",
+      "challenged_by": ["web_researcher", "design_analyst"],
+      "available_for_consultation": true
+    },
+
+    "product_analyst": {
+      "id": "product_analyst",
+      "role": "Product Analyst",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/product_analyst.md",
+      "tools": [
+        "web_fetch",
+        "web_search",
+        "report_submit",
+        "gap_analysis_submit",
+        "cross_challenge_request",
+        "cross_challenge_respond"
+      ],
+      "report_type": "product_overview_report",
+      "depends_on": ["web_researcher", "market_researcher", "design_analyst", "technical_architect"],
+      "challenged_by": ["devils_advocate", "realist_angel"]
+    },
+
+    "devils_advocate": {
+      "id": "devils_advocate",
+      "role": "Devil's Advocate",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/devils_advocate.md",
+      "tools": [
+        "web_search",
+        "report_read",
+        "verdict_submit",
+        "cross_challenge_request"
+      ],
+      "report_type": "devils_advocate_verdict",
+      "depends_on": ["product_analyst"],
+      "challenges": ["web_researcher", "market_researcher", "design_analyst", "technical_architect", "product_analyst"]
+    },
+
+    "realist_angel": {
+      "id": "realist_angel",
+      "role": "Realist Angel",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/realist_angel.md",
+      "tools": [
+        "web_search",
+        "report_read",
+        "verdict_submit",
+        "cross_challenge_request"
+      ],
+      "report_type": "realist_angel_verdict",
+      "depends_on": ["product_analyst"],
+      "challenges": ["devils_advocate"]
+    }
+  },
+
+  "workflow": {
+    "task_lifecycle": [
+      {
+        "stage": "RECON_REQUESTED",
+        "owner": "research_director",
+        "description": "Research Director receives target, asks pre-recon questions, decomposes into tasks",
+        "transitions_to": "PRE_RECON_QUESTIONS"
+      },
+      {
+        "stage": "PRE_RECON_QUESTIONS",
+        "owner": "research_director",
+        "description": "Ask user about target type, API availability, competitive intent before proceeding",
+        "transitions_to": "RESEARCH_IN_PROGRESS"
+      },
+      {
+        "stage": "RESEARCH_IN_PROGRESS",
+        "owners": ["web_researcher", "market_researcher", "design_analyst", "technical_architect"],
+        "parallel": true,
+        "description": "All four specialist researchers work simultaneously on their domains",
+        "transitions_to": "RESEARCH_UNDER_CHALLENGE"
+      },
+      {
+        "stage": "RESEARCH_UNDER_CHALLENGE",
+        "description": "Each researcher's report is challenged by assigned challengers",
+        "parallel": true,
+        "gate": "cross_challenge",
+        "on_all_defended": "SYNTHESIS_IN_PROGRESS",
+        "on_any_undefended": "RESEARCH_REVISION"
+      },
+      {
+        "stage": "RESEARCH_REVISION",
+        "description": "Researchers revise reports based on cross-challenge findings",
+        "transitions_to": "RESEARCH_UNDER_CHALLENGE"
+      },
+      {
+        "stage": "SYNTHESIS_IN_PROGRESS",
+        "owner": "product_analyst",
+        "description": "Product Analyst reads all reports and produces comprehensive overview + gap analysis",
+        "transitions_to": "ADVISORY_REVIEW"
+      },
+      {
+        "stage": "ADVISORY_REVIEW",
+        "owners": ["devils_advocate", "realist_angel"],
+        "parallel": true,
+        "description": "Devil's Advocate and Realist Angel produce their verdicts based on all reports",
+        "transitions_to": "DIRECTOR_VERDICT"
+      },
+      {
+        "stage": "DIRECTOR_VERDICT",
+        "owner": "research_director",
+        "description": "Research Director reads all reports, both advisory verdicts, and produces final go/no-go recommendation",
+        "terminal": true
+      }
+    ]
+  },
+
+  "gates": {
+    "cross_challenge": {
+      "description": "Each specialist's report is challenged by their assigned challengers. Challenger must produce specific factual objections. Researcher must defend or revise.",
+      "max_revision_cycles": 2,
+      "escalate_to": "research_director"
+    }
+  },
+
+  "cross_challenge_matrix": {
+    "web_researcher": {
+      "challenged_by": ["market_researcher", "technical_architect"],
+      "focus": "Are the feature claims accurate? Is the mechanism description technically sound?"
+    },
+    "market_researcher": {
+      "challenged_by": ["web_researcher", "product_analyst"],
+      "focus": "Are the reviews representative? Is the sentiment analysis balanced? Are sources credible?"
+    },
+    "design_analyst": {
+      "challenged_by": ["technical_architect"],
+      "focus": "Are the identified libraries/packages actually used? Is the design system spec accurate and reproducible?"
+    },
+    "technical_architect": {
+      "challenged_by": ["web_researcher", "design_analyst"],
+      "focus": "Are the infrastructure assumptions evidence-based? Are cost estimates realistic?"
+    },
+    "product_analyst": {
+      "challenged_by": ["devils_advocate", "realist_angel"],
+      "focus": "Is the gap analysis honest? Are opportunities real or wishful thinking?"
+    }
+  },
+
+  "pre_recon_questions": {
+    "always_ask": [
+      "What is the target? (URL, product name, or idea description)",
+      "What is your intent? (build better, build adjacent, explore feasibility, or just understand)",
+      "Any specific angle you care most about? (design, pricing, tech, market fit)"
+    ],
+    "conditional_ask": {
+      "if_url_provided": [
+        "Do they have a public API or developer docs?",
+        "Is there a specific feature or page you want deep-dived?"
+      ],
+      "if_idea_provided": [
+        "Are there existing competitors you know of?",
+        "What problem does this solve for the end user?"
+      ]
+    }
+  },
+
+  "output": {
+    "separate_reports": true,
+    "report_types": [
+      "web_research_report",
+      "market_research_report",
+      "design_report",
+      "technical_architecture_report",
+      "product_overview_report",
+      "gap_analysis",
+      "devils_advocate_verdict",
+      "realist_angel_verdict",
+      "director_recommendation"
+    ],
+    "final_deliverable": "director_recommendation"
+  },
+
+  "schemas": {
+    "task": "schemas/task.schema.json",
+    "research_report": "schemas/research_report.schema.json",
+    "design_report": "schemas/design_report.schema.json",
+    "product_overview": "schemas/product_overview.schema.json",
+    "advisory_verdict": "schemas/advisory_verdict.schema.json",
+    "challenge_report": "schemas/challenge_report.schema.json",
+    "director_recommendation": "schemas/director_recommendation.schema.json"
+  },
+
+  "audit": {
+    "log_all_challenges": true,
+    "log_all_revisions": true,
+    "require_evidence_sources": true,
+    "label_estimates_vs_facts": true,
+    "escalate_after_challenge_cycles": 2
+  }
+}

@@ -1,0 +1,140 @@
+/* =============================================================
+   OTTER.AI DESIGN SYSTEM — BUTTON COMPONENTS
+   ============================================================= */
+
+/* ─── Base Button ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-base);
+  line-height: 1;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all var(--duration-medium) var(--ease-default);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Primary (Hot Gradient) ─── */
+.btn-primary {
+  composes: btn;
+  padding: 0.875rem 1.5rem;
+  background: var(--gradient-hot);
+  color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translate3d(0.4rem, -0.4rem, 0);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── Secondary (Outlined/Inverted) ─── */
+.btn-secondary {
+  composes: btn;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-white);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-brand-blue);
+  color: var(--color-brand-blue);
+  transform: translate3d(0.4rem, -0.4rem, 0);
+}
+
+/* ─── CTA Blue ─── */
+.btn-blue {
+  composes: btn;
+  padding: 0.875rem 1.5rem;
+  background: var(--gradient-cta);
+  color: var(--color-white);
+}
+
+.btn-blue:hover {
+  transform: translate3d(0.4rem, -0.4rem, 0);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── Ghost / Link Style ─── */
+.btn-link {
+  composes: btn;
+  padding: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  position: relative;
+}
+
+.btn-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-brand-blue-dark);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-medium) var(--ease-default);
+}
+
+.btn-link:hover::after {
+  transform: scaleX(1);
+}
+
+.btn-link:hover {
+  color: var(--color-brand-blue-dark);
+}
+
+/* ─── Link with Arrow ─── */
+.btn-link-arrow {
+  composes: btn-link;
+}
+
+.btn-link-arrow .arrow {
+  display: inline-block;
+  transition: transform var(--duration-medium) var(--ease-default);
+}
+
+.btn-link-arrow:hover .arrow {
+  transform: translateX(0.25rem);
+}
+
+/* ─── Size Variants ─── */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: var(--text-sm);
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: var(--text-lg);
+}
+
+/* ─── Dark Background Variants ─── */
+.btn-link--inverse {
+  color: var(--color-white);
+}
+
+.btn-link--inverse::after {
+  background: var(--color-white);
+}
+
+/* ─── Button with Badge (hot gradient icon) ─── */
+.btn-with-badge {
+  position: relative;
+}
+
+.btn-with-badge .badge {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--radius-full);
+  background: var(--gradient-hot);
+  flex-shrink: 0;
+}

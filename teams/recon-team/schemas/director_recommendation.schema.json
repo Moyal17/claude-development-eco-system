@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "director-recommendation.schema.json",
+  "title": "Director Recommendation",
+  "description": "Final go/no-go recommendation from the Research Director",
+  "type": "object",
+  "required": ["type", "target", "verdict", "confidence", "summary", "key_opportunities", "key_risks", "devil_vs_angel", "recommended_next_steps", "kill_conditions"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "director_recommendation"
+    },
+    "target": { "type": "string" },
+    "verdict": {
+      "type": "string",
+      "enum": ["GO", "NO-GO", "CONDITIONAL-GO"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "summary": {
+      "type": "string",
+      "description": "2-3 sentences — the Research Director's honest personal take",
+      "minLength": 50
+    },
+    "key_opportunities": {
+      "type": "array",
+      "description": "Top 3 opportunities to exploit",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": { "type": "string" }
+    },
+    "key_risks": {
+      "type": "array",
+      "description": "Top 3 risks to worry about",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": { "type": "string" }
+    },
+    "devil_vs_angel": {
+      "type": "string",
+      "description": "Who made the stronger case and why"
+    },
+    "recommended_next_steps": {
+      "type": "array",
+      "description": "What the user should do if they proceed",
+      "items": { "type": "string" }
+    },
+    "kill_conditions": {
+      "type": "array",
+      "description": "Conditions under which the verdict changes to NO-GO",
+      "items": { "type": "string" }
+    },
+    "reports_reviewed": {
+      "type": "array",
+      "description": "List of all reports the director reviewed before making this recommendation",
+      "items": { "type": "string" }
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

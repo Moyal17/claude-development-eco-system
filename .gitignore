@@ -1,0 +1,6 @@
+# claude-development-eco-system — never commit credential files
+jira.json
+*.local.json
+.env
+.env.*
+!.env.example

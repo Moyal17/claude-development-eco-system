@@ -1,0 +1,79 @@
+{
+  "name": "implementation_submit",
+  "description": "Submit completed implementation artifacts for code review and wiring review. Triggers parallel review by code_reviewer and wiring_expert. Must only be called after architect has approved the plan.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "approved_plan_version", "files_changed", "summary_of_changes"],
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "approved_plan_version": {
+        "type": "string",
+        "description": "The plan_version timestamp that was approved by the architect — must match"
+      },
+      "revision": {
+        "type": "integer",
+        "description": "1 for first submission, increments on each resubmission after rejection",
+        "minimum": 1,
+        "default": 1
+      },
+      "files_changed": {
+        "type": "array",
+        "description": "All files modified or created in this implementation",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["path", "action"],
+          "properties": {
+            "path": { "type": "string" },
+            "action": { "type": "string", "enum": ["created", "modified", "deleted"] }
+          }
+        }
+      },
+      "summary_of_changes": {
+        "type": "string",
+        "description": "Brief description of what was implemented",
+        "minLength": 20
+      },
+      "test_results": {
+        "type": "object",
+        "properties": {
+          "passed": { "type": "integer", "minimum": 0 },
+          "failed": { "type": "integer", "minimum": 0 },
+          "skipped": { "type": "integer", "minimum": 0 },
+          "command": { "type": "string" }
+        }
+      },
+      "cross_consultations": {
+        "type": "array",
+        "description": "Any architectural consultations that occurred during implementation",
+        "items": {
+          "type": "object",
+          "properties": {
+            "question": { "type": "string" },
+            "answer": { "type": "string" }
+          }
+        },
+        "default": []
+      },
+      "fix_notes": {
+        "type": "string",
+        "description": "On resubmission: description of what was changed to address reviewer findings"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean", "const": true },
+      "task_id": { "type": "string" },
+      "new_task_status": { "type": "string", "const": "IMPLEMENTATION_UNDER_REVIEW" },
+      "reviews_triggered": {
+        "type": "array",
+        "items": { "type": "string", "enum": ["code_reviewer", "wiring_expert"] }
+      }
+    }
+  }
+}

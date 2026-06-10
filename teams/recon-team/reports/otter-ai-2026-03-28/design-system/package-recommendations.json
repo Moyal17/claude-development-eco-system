@@ -1,0 +1,76 @@
+{
+  "_comment": "Recommended npm packages to replicate Otter.ai's design in React",
+  "_source": "Extracted from otter.ai tech stack analysis, 2026-03-28",
+
+  "core": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0",
+    "vite": "^6.0.0"
+  },
+
+  "styling": {
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/vite": "latest",
+    "postcss": "^8.0.0",
+    "autoprefixer": "^10.0.0",
+    "_why": "Otter uses custom Webflow CSS. Tailwind with their exact tokens is the fastest way to replicate in React."
+  },
+
+  "animations": {
+    "gsap": "^3.12.0",
+    "@gsap/react": "^2.0.0",
+    "_why": "Otter uses GSAP for marquees, typewriter effects, and scroll-triggered animations. This is NOT optional — it's their core animation engine.",
+    "alternatives": {
+      "framer-motion": "^11.0.0",
+      "_note": "Framer Motion is more React-idiomatic. Use if you prefer React hooks over GSAP timeline API. Both can achieve Otter's effects."
+    }
+  },
+
+  "carousel": {
+    "swiper": "^11.0.0",
+    "_why": "Otter uses Swiper.js for all carousels — testimonials, feature showcases, image galleries. Direct match."
+  },
+
+  "scroll_animations": {
+    "option_a_gsap": {
+      "package": "gsap (ScrollTrigger plugin)",
+      "_note": "Included with GSAP. Otter uses ScrollTrigger for scroll-driven marquee direction and section reveals."
+    },
+    "option_b_standalone": {
+      "package": "react-intersection-observer",
+      "version": "^9.0.0",
+      "_note": "Lighter alternative for simple fade-in-on-scroll. Otter also uses native IntersectionObserver for video autoplay."
+    }
+  },
+
+  "icons": {
+    "lucide-react": "^0.400.0",
+    "_why": "Otter uses custom SVG icons. Lucide is the closest open-source match in style — clean, minimal, consistent stroke width.",
+    "alternatives": ["@heroicons/react", "react-icons"]
+  },
+
+  "fonts": {
+    "package": "@fontsource/inter",
+    "_why": "Otter's font is a custom Webflow font closest to Inter. Self-hosting with @fontsource is faster than Google Fonts.",
+    "weights": [400, 500, 600, 700]
+  },
+
+  "utilities": {
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.0.0",
+    "_why": "For conditional class composition — essential when building Otter's component variants (btn-primary, btn-link, etc.)"
+  },
+
+  "optional_enhancements": {
+    "lottie-react": "^2.4.0",
+    "_note": "If you want to add animated illustrations like many SaaS sites. Otter doesn't use Lottie but it fits the aesthetic.",
+
+    "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.0",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "_note_radix": "Headless, accessible components for FAQ accordions, nav dropdowns, pricing toggles. Otter builds these custom but Radix gives you accessibility for free."
+  },
+
+  "install_command": "npm install react react-dom react-router-dom gsap @gsap/react swiper lucide-react @fontsource/inter clsx tailwind-merge @radix-ui/react-accordion @radix-ui/react-dropdown-menu"
+}

@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "wiring_report.schema.json",
+  "title": "Wiring Report",
+  "description": "Structured output from the Wiring Expert after tracing and reviewing an implementation end-to-end",
+  "type": "object",
+  "required": ["gate", "task_id", "reviewed_by", "decision", "summary", "trace", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "gate": {
+      "type": "string",
+      "const": "wiring_approval"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^TASK-[0-9]+$"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "const": "wiring_expert"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "Which review round this is (1 = first review, 2+ = re-review after fixes)",
+      "minimum": 1,
+      "default": 1
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["APPROVED", "REJECTED"],
+      "description": "APPROVED only when zero blocking findings remain AND trace is complete"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One sentence overall assessment of the wiring",
+      "minLength": 10
+    },
+    "trace": {
+      "type": "object",
+      "description": "Required call trace proving the feature is reachable and connected end-to-end",
+      "required": ["entrypoint", "path", "terminal"],
+      "properties": {
+        "entrypoint": {
+          "type": "string",
+          "description": "file:line — where an external caller enters the feature (route, event, CLI, cron, etc.)"
+        },
+        "path": {
+          "type": "array",
+          "description": "Ordered list of file:line steps through the call chain",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "terminal": {
+          "type": "string",
+          "description": "file:line — where the feature produces its final effect (response, DB write, event emit, etc.)"
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Individual wiring issues found. Empty array is valid on APPROVED.",
+      "items": {
+        "type": "object",
+        "required": ["severity", "category", "file", "issue", "fix"],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["blocking", "warning"],
+            "description": "All wiring findings are at minimum warnings; broken connections are always blocking"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["entrypoint", "dependency", "schema", "dead_code", "regression", "production_readiness"]
+          },
+          "file": {
+            "type": "string",
+            "description": "Relative file path where the wiring issue is located"
+          },
+          "line": {
+            "type": "string",
+            "description": "Line number or range"
+          },
+          "issue": {
+            "type": "string",
+            "description": "What is disconnected, missing, or broken",
+            "minLength": 10
+          },
+          "fix": {
+            "type": "string",
+            "description": "What must be added, changed, or removed to correct the wiring",
+            "minLength": 10
+          },
+          "resolved": {
+            "type": "boolean",
+            "description": "Set to true on re-review when this finding has been satisfactorily addressed",
+            "default": false
+          }
+        }
+      }
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

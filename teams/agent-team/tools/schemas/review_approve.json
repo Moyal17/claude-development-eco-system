@@ -1,0 +1,36 @@
+{
+  "name": "review_approve",
+  "description": "Approve the implementation from a code quality, functionality, and security perspective. Only callable by code_reviewer. Both code_review_approval and wiring_approval gates must pass before the task is DONE.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "revision", "summary"],
+    "properties": {
+      "task_id": { "type": "string", "pattern": "^TASK-[0-9]+$" },
+      "revision": { "type": "integer", "minimum": 1 },
+      "summary": { "type": "string", "description": "One sentence confirming the implementation is approved" },
+      "warnings": {
+        "type": "array",
+        "description": "Non-blocking findings to note for the implementor's awareness",
+        "items": {
+          "type": "object",
+          "required": ["file", "line", "dimension", "note"],
+          "properties": {
+            "file": { "type": "string" },
+            "line": { "type": "string" },
+            "dimension": { "type": "string", "enum": ["functionality", "quality", "tests", "security", "maintainability"] },
+            "note": { "type": "string" }
+          }
+        },
+        "default": []
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "gate": { "type": "string", "const": "code_review_approval" },
+      "approved": { "type": "boolean", "const": true },
+      "task_id": { "type": "string" }
+    }
+  }
+}

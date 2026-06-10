@@ -1,0 +1,229 @@
+{
+  "$schema": "https://your-org/agent-team-schema/v1",
+  "team": {
+    "name": "TransVibe Marketing Team",
+    "version": "1.0.0",
+    "description": "Story-first marketing team for TransVibe — built to produce honest, human content that earns trust rather than buys attention"
+  },
+
+  "product": {
+    "name": "TransVibe",
+    "category": "Speech-to-text SaaS with AI summaries",
+    "tagline_working": "You recorded something important. We make sure you can use it.",
+    "key_differentiators": [
+      "Transparent per-credit pricing — no hidden per-minute fees",
+      "Saver path: 70% cheaper for non-urgent transcription (up to 24h turnaround)",
+      "Two-pass AI summaries with quality evaluation",
+      "100+ language support with translation",
+      "Student plan at $8/month — below the $10 psychological barrier, lowest in category"
+    ],
+    "pricing": {
+      "free_trial": "50 credits",
+      "student": "$8/mo — 600 credits (~20h Saver / 6h Express)",
+      "personal": "$15/mo — 1,000 credits",
+      "creator": "$24/mo — 1,200 credits + custom prompts + PII redaction",
+      "business_team": "$59/mo — 3,000 credits"
+    },
+    "competitors": ["Otter.ai", "Fireflies.ai", "Rev", "Descript", "Sonix", "Notta", "tl;dv", "Happy Scribe"],
+    "primary_markets": ["students", "independent podcasters", "researchers", "freelance creators", "small teams"]
+  },
+
+  "agents": {
+    "cmo": {
+      "id": "cmo",
+      "name": "Noa Levi",
+      "role": "Chief Marketing Officer",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/cmo.md",
+      "responsibilities": [
+        "Run discovery with the user before any work begins",
+        "Decompose marketing objectives into specific, channel-specific briefs",
+        "Assign tasks to Growth Marketer, Brand Marketer, or Content Writer",
+        "Review and approve all outputs — no piece leaves the team without CMO sign-off",
+        "Reject mediocrity with specific feedback and redirect",
+        "Escalate unresolvable issues to the user after 3 rejection cycles"
+      ],
+      "gate_authority": ["brief_approval", "content_approval"],
+      "discovery_required_before_briefing": true
+    },
+
+    "growth_marketer": {
+      "id": "growth_marketer",
+      "name": "Ariel Chen",
+      "role": "Senior Growth Marketer",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/growth_marketer.md",
+      "specializations": [
+        "SEO strategy and keyword research",
+        "Community distribution (Reddit, Indie Hackers, niche forums)",
+        "Conversion funnel analysis",
+        "Competitor positioning and differentiation",
+        "Backlink and directory acquisition",
+        "Channel selection with conversion path tracing"
+      ],
+      "discovery_questions_required": true
+    },
+
+    "brand_marketer": {
+      "id": "brand_marketer",
+      "name": "Sam Torres",
+      "role": "Brand & Community Marketer",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/brand_marketer.md",
+      "specializations": [
+        "Brand voice and positioning",
+        "Community participation strategy (not broadcast — contribution first)",
+        "Trust architecture and transparency as brand asset",
+        "Social proof pipeline (finding and capturing real user stories)",
+        "Partnership identification (educator networks, creator communities)",
+        "Long-term community presence and relationship building"
+      ],
+      "discovery_questions_required": true
+    },
+
+    "content_writer": {
+      "id": "content_writer",
+      "name": "Mila Dayan",
+      "role": "Senior Content Writer (Narrative Journalist)",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/content_writer.md",
+      "specializations": [
+        "Micro-stories: 200-400 word platform posts (Reddit, IH, community)",
+        "Long-form narrative (800-1,500 word story-driven blog posts)",
+        "Short-form social (Twitter/X threads, LinkedIn stories)",
+        "Product Hunt maker first comment",
+        "Community value posts (SEO-friendly, help-first)",
+        "Real user story capture and narrative transformation"
+      ],
+      "output_formats": [
+        "platform_story_post",
+        "longform_story",
+        "short_form_social",
+        "product_hunt_maker_comment",
+        "community_value_post"
+      ],
+      "discovery_questions_required": true
+    },
+
+    "storytelling_architect": {
+      "id": "storytelling_architect",
+      "name": "Maya Rosen",
+      "role": "Director of Story (HeyGen avatar scripts + product demo narrative)",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/storytelling_architect.md",
+      "specializations": [
+        "PAS narrative arcs for product demos (Problem → Agitation → Solution)",
+        "HeyGen avatar pacing (~2.5 wps, scene-level word budgeting)",
+        "Timestamped scene scripts with demo asset choreography",
+        "Multi-POV scripting (founder first-person / customer testimonial / narrator)",
+        "Demo intercut design — pairing every VO line with a Remotion MP4 or B-roll cue",
+        "End-card CTA design tuned to channel (YouTube short, LinkedIn, landing-page hero)"
+      ],
+      "output_formats": [
+        "heygen_avatar_script",
+        "shotlist_table",
+        "heygen_paste_block"
+      ],
+      "discovery_questions_required": true
+    }
+  },
+
+  "workflow": {
+    "campaign_lifecycle": [
+      {
+        "stage": "BRIEF_RECEIVED",
+        "owner": "cmo",
+        "action": "Run discovery session with user — audience, story, objective, constraints",
+        "transitions_to": "STRATEGY_IN_PROGRESS",
+        "gate": "discovery_complete"
+      },
+      {
+        "stage": "STRATEGY_IN_PROGRESS",
+        "owner": "cmo",
+        "action": "Decompose objective into channel-specific briefs, assign to agents",
+        "transitions_to": "EXECUTION_IN_PROGRESS"
+      },
+      {
+        "stage": "EXECUTION_IN_PROGRESS",
+        "owners": ["growth_marketer", "brand_marketer", "content_writer"],
+        "parallel": true,
+        "action": "Each agent executes their brief, asks discovery questions if needed",
+        "transitions_to": "CMO_REVIEW"
+      },
+      {
+        "stage": "CMO_REVIEW",
+        "owner": "cmo",
+        "gate": "content_approval",
+        "blocking": true,
+        "criteria": [
+          "Sounds like a real human wrote it",
+          "Specific true story at the center (not vague pain points)",
+          "Hook is honest — no overclaim",
+          "ICP would actually stop scrolling for this",
+          "Serves ICP first, product second",
+          "Channel strategy matches content format and community norms"
+        ],
+        "on_approve": "CAMPAIGN_READY",
+        "on_reject": "REVISION_IN_PROGRESS"
+      },
+      {
+        "stage": "REVISION_IN_PROGRESS",
+        "owner": "assigned_agent",
+        "action": "Address all CMO blocking findings",
+        "transitions_to": "CMO_REVIEW",
+        "rejection_cap": 3
+      },
+      {
+        "stage": "CAMPAIGN_READY",
+        "owner": "cmo",
+        "terminal": true,
+        "action": "Deliver final assets with distribution instructions to user"
+      }
+    ]
+  },
+
+  "gates": {
+    "discovery_complete": {
+      "authority": "cmo",
+      "required_before": "any_briefing",
+      "minimum_questions_answered": [
+        "ICP named and situated",
+        "Objective is specific and measurable",
+        "Channel identified with ICP presence confirmed",
+        "Story or story source identified",
+        "Constraints documented"
+      ]
+    },
+    "content_approval": {
+      "authority": "cmo",
+      "reject_reason_required": true,
+      "reject_must_be_specific": true,
+      "line_level_feedback_required": false
+    }
+  },
+
+  "quality_standards": {
+    "banned_phrases": [
+      "game-changing", "revolutionary", "seamless", "powerful", "intuitive",
+      "supercharge your workflow", "take your X to the next level",
+      "Are you tired of X?", "Introducing [product]", "leverage", "synergy",
+      "cutting-edge", "best-in-class", "world-class", "disruptive"
+    ],
+    "required_elements_in_every_content_piece": [
+      "A specific human being with a specific problem",
+      "Evidence that alternatives were tried and failed",
+      "Product arrival that feels earned, not planted",
+      "One specific true moment where the product worked",
+      "An ending that is honest and understated",
+      "For video scripts: every spoken line is paired with a visual change — no orphaned VO"
+    ],
+    "story_truth_test": "Would the person in this story recognize themselves in it?"
+  },
+
+  "audit": {
+    "log_all_cmo_decisions": true,
+    "log_all_discovery_sessions": true,
+    "require_rejection_reason": true,
+    "escalate_after_rejection_cycles": 3
+  }
+}

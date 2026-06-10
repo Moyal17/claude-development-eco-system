@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "review_report.schema.json",
+  "title": "Code Review Report",
+  "description": "Structured output from the Code Reviewer after reviewing an implementation",
+  "type": "object",
+  "required": ["gate", "task_id", "reviewed_by", "decision", "summary", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "gate": {
+      "type": "string",
+      "const": "code_review_approval"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^TASK-[0-9]+$"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "const": "code_reviewer"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "Which review round this is (1 = first review, 2+ = re-review after fixes)",
+      "minimum": 1,
+      "default": 1
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["APPROVED", "REJECTED"],
+      "description": "APPROVED only when zero blocking findings remain"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One sentence overall assessment of the implementation",
+      "minLength": 10
+    },
+    "findings": {
+      "type": "array",
+      "description": "Individual issues found during review. Empty array is valid on APPROVED.",
+      "items": {
+        "type": "object",
+        "required": ["severity", "file", "dimension", "issue", "fix"],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["blocking", "warning", "suggestion"],
+            "description": "blocking = must fix before approval; warning = should fix; suggestion = nice to have"
+          },
+          "file": {
+            "type": "string",
+            "description": "Relative file path"
+          },
+          "line": {
+            "type": "string",
+            "description": "Line number or range (e.g. '42' or '42-58')"
+          },
+          "dimension": {
+            "type": "string",
+            "enum": ["functionality", "quality", "tests", "security", "maintainability"]
+          },
+          "issue": {
+            "type": "string",
+            "description": "Clear description of what is wrong",
+            "minLength": 10
+          },
+          "fix": {
+            "type": "string",
+            "description": "Specific, actionable description of what must change",
+            "minLength": 10
+          },
+          "resolved": {
+            "type": "boolean",
+            "description": "Set to true on re-review when this finding has been satisfactorily addressed",
+            "default": false
+          }
+        }
+      }
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

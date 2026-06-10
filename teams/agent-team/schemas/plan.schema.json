@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "plan.schema.json",
+  "title": "Implementation Plan",
+  "description": "The implementor's plan submitted to the architect for approval before any code is written",
+  "type": "object",
+  "required": ["task_id", "plan_version", "summary", "files_to_modify", "files_to_create", "data_flow", "edge_cases", "test_plan"],
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^TASK-[0-9]+$"
+    },
+    "submitted_by": {
+      "type": "string",
+      "description": "Implementor agent ID submitting the plan"
+    },
+    "plan_version": {
+      "type": "string",
+      "description": "ISO timestamp used as version identifier",
+      "format": "date-time"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "Revision number — increments on each resubmission after rejection",
+      "minimum": 1,
+      "default": 1
+    },
+    "summary": {
+      "type": "string",
+      "description": "One paragraph describing the approach and why it was chosen",
+      "minLength": 50
+    },
+    "files_to_modify": {
+      "type": "array",
+      "description": "Existing files that will be changed",
+      "items": {
+        "type": "object",
+        "required": ["path", "change"],
+        "properties": {
+          "path": { "type": "string" },
+          "change": { "type": "string", "description": "Description of what will be changed and why" }
+        }
+      }
+    },
+    "files_to_create": {
+      "type": "array",
+      "description": "New files that will be created",
+      "items": {
+        "type": "object",
+        "required": ["path", "purpose"],
+        "properties": {
+          "path": { "type": "string" },
+          "purpose": { "type": "string", "description": "What this file does and why it is needed" }
+        }
+      }
+    },
+    "data_flow": {
+      "type": "string",
+      "description": "Narrative description of how data enters, is processed, and exits or is persisted",
+      "minLength": 30
+    },
+    "edge_cases": {
+      "type": "array",
+      "description": "All identified edge cases and how each will be handled",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["case", "handling"],
+        "properties": {
+          "case": { "type": "string" },
+          "handling": { "type": "string" }
+        }
+      }
+    },
+    "test_plan": {
+      "type": "string",
+      "description": "Description of tests that will be written: what, why, and at what level (unit/integration/e2e)",
+      "minLength": 20
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "New packages, env vars, migrations, or config changes required",
+      "items": {
+        "type": "object",
+        "required": ["type", "name", "reason"],
+        "properties": {
+          "type": { "type": "string", "enum": ["package", "env_var", "migration", "config", "feature_flag"] },
+          "name": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      },
+      "default": []
+    },
+    "risk_flags": {
+      "type": "array",
+      "description": "Areas of the codebase that are sensitive or risky to touch",
+      "items": {
+        "type": "object",
+        "required": ["area", "risk", "mitigation"],
+        "properties": {
+          "area": { "type": "string" },
+          "risk": { "type": "string" },
+          "mitigation": { "type": "string" }
+        }
+      },
+      "default": []
+    },
+    "cross_consultations": {
+      "type": "array",
+      "description": "Any architectural questions asked and answered before submitting this plan",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "answered_by": { "type": "string" }
+        }
+      },
+      "default": []
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

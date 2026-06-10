@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "research_findings.schema.json",
+  "title": "Research Findings Submission",
+  "description": "Metadata and summary of a researcher's completed findings document",
+  "type": "object",
+  "required": ["brief_id", "researcher_id", "plan_version", "document_path", "key_findings_summary", "diagrams_produced", "submitted_at"],
+  "additionalProperties": false,
+  "properties": {
+    "brief_id": {
+      "type": "string",
+      "pattern": "^BRIEF-[0-9]+$"
+    },
+    "researcher_id": {
+      "type": "string",
+      "enum": ["researcher_1", "researcher_2"]
+    },
+    "plan_version": {
+      "type": "string",
+      "description": "The approved plan version this findings document is based on"
+    },
+    "document_path": {
+      "type": "string",
+      "description": "Path to the full research findings Markdown document"
+    },
+    "key_findings_summary": {
+      "type": "array",
+      "description": "Top-line findings — one sentence each — for PM consumption",
+      "minItems": 3,
+      "maxItems": 10,
+      "items": { "type": "string", "minLength": 15 }
+    },
+    "diagrams_produced": {
+      "type": "array",
+      "description": "Titles of all Mermaid diagrams in the findings document",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "edge_cases_count": {
+      "type": "integer",
+      "description": "Total number of edge cases documented",
+      "minimum": 0
+    },
+    "competitors_analyzed": {
+      "type": "array",
+      "description": "Names or descriptions of competitors analyzed",
+      "items": { "type": "string" }
+    },
+    "the_extra_edge": {
+      "type": "string",
+      "description": "researcher_2 only: One sentence stating the unique differentiating opportunity identified"
+    },
+    "cross_consultations": {
+      "type": "array",
+      "description": "CPO questions asked and answers received during research execution",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "impact_on_findings": { "type": "string" }
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "description": "Questions research could not fully answer — for PM or CPO attention",
+      "items": { "type": "string" }
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

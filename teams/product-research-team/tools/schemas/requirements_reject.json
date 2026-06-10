@@ -1,0 +1,57 @@
+{
+  "name": "requirements_reject",
+  "description": "CPO rejects the Requirements Document and returns it to the PMs for revision. Only the CPO may call this tool.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "revision", "summary", "blocking_findings"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "summary": {
+        "type": "string",
+        "description": "One sentence explaining why the requirements are not approved",
+        "minLength": 20
+      },
+      "blocking_findings": {
+        "type": "array",
+        "description": "All issues the PMs must address before resubmission",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["section", "issue", "fix"],
+          "properties": {
+            "section": { "type": "string", "description": "Section of the requirements doc with the issue" },
+            "issue": { "type": "string", "description": "What is wrong or missing" },
+            "fix": { "type": "string", "description": "What must change" }
+          }
+        }
+      },
+      "warnings": {
+        "type": "array",
+        "description": "Non-blocking issues to address before resubmission",
+        "items": {
+          "type": "object",
+          "properties": {
+            "section": { "type": "string" },
+            "issue": { "type": "string" },
+            "suggestion": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "rejected": { "type": "boolean", "const": true },
+      "gate": { "type": "string", "const": "requirements_approval" },
+      "decided_at": { "type": "string", "format": "date-time" }
+    }
+  }
+}

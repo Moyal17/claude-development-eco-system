@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "requirements_doc.schema.json",
+  "title": "Requirements Document Submission",
+  "description": "Metadata and summary of the PM-authored requirements document submitted for CPO approval",
+  "type": "object",
+  "required": ["brief_id", "submitted_by", "document_path", "pm_cross_consultation_complete", "research_traceability", "feature_count", "user_story_count", "edge_case_count", "submitted_at"],
+  "additionalProperties": false,
+  "properties": {
+    "brief_id": {
+      "type": "string",
+      "pattern": "^BRIEF-[0-9]+$"
+    },
+    "submitted_by": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["pm_1", "pm_2"] },
+      "minItems": 2
+    },
+    "plan_version": {
+      "type": "string",
+      "description": "Submission version timestamp"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Revision number — increments after each CPO rejection"
+    },
+    "document_path": {
+      "type": "string",
+      "description": "Path to the full Requirements Document Markdown file"
+    },
+    "pm_cross_consultation_complete": {
+      "type": "boolean",
+      "description": "Confirms that mandatory PM cross-consultation was conducted before submission",
+      "const": true
+    },
+    "pm_cross_consultation_log_path": {
+      "type": "string",
+      "description": "Path or inline reference to PM cross-consultation log"
+    },
+    "research_traceability": {
+      "type": "boolean",
+      "description": "Confirms a traceability matrix linking requirements to research findings is included",
+      "const": true
+    },
+    "feature_count": {
+      "type": "object",
+      "required": ["must", "should", "could", "wont"],
+      "properties": {
+        "must": { "type": "integer", "minimum": 1, "description": "Must Have features (MVP)" },
+        "should": { "type": "integer", "minimum": 0, "description": "Should Have features (Post-MVP v1)" },
+        "could": { "type": "integer", "minimum": 0, "description": "Could Have features (Future)" },
+        "wont": { "type": "integer", "minimum": 1, "description": "Won't Have (Out of scope)" }
+      }
+    },
+    "user_story_count": {
+      "type": "integer",
+      "minimum": 3,
+      "description": "Total user stories written"
+    },
+    "edge_case_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Total edge cases addressed in requirements"
+    },
+    "the_extra_edge_specced": {
+      "type": "boolean",
+      "description": "Confirms the EXTRA edge from researcher_2 is represented as a specific requirement",
+      "const": true
+    },
+    "mvp_success_metrics": {
+      "type": "array",
+      "description": "Measurable metrics that will indicate MVP success",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "cross_consultations_with_cpo": {
+      "type": "array",
+      "description": "Any CPO cross-consultations during requirements drafting",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" }
+        }
+      }
+    },
+    "changelog": {
+      "type": "string",
+      "description": "On revision > 1: summary of changes made since last submission"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

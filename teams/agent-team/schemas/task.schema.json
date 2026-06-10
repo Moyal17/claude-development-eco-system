@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "task.schema.json",
+  "title": "Task",
+  "description": "A unit of engineering work created by the CTO and executed through the agent team workflow",
+  "type": "object",
+  "required": ["id", "title", "description", "acceptance_criteria", "assigned_implementor", "priority", "created_by", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique task identifier",
+      "pattern": "^TASK-[0-9]+$",
+      "examples": ["TASK-001", "TASK-042"]
+    },
+    "title": {
+      "type": "string",
+      "description": "Short, imperative title describing the task",
+      "minLength": 5,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "description": "Full description of the work to be done, including motivation and context",
+      "minLength": 20
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "description": "Testable, unambiguous conditions that must all be true for the task to be DONE",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 10
+      }
+    },
+    "assigned_implementor": {
+      "type": "string",
+      "description": "ID of the implementor agent assigned to this task",
+      "enum": ["implementor_1", "implementor_2"]
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Task priority level"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent or user who created the task",
+      "enum": ["cto", "user"]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current workflow stage of the task",
+      "enum": [
+        "TASK_CREATED",
+        "PLAN_IN_PROGRESS",
+        "PLAN_UNDER_REVIEW",
+        "PLAN_REJECTED",
+        "IMPLEMENTATION_IN_PROGRESS",
+        "IMPLEMENTATION_UNDER_REVIEW",
+        "FIX_IN_PROGRESS",
+        "FIX_UNDER_REVIEW",
+        "TASK_DONE"
+      ]
+    },
+    "depends_on_task_ids": {
+      "type": "array",
+      "description": "Task IDs that must be DONE before this task may begin",
+      "items": {
+        "type": "string",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "default": []
+    },
+    "scope_boundaries": {
+      "type": "string",
+      "description": "Explicit description of what is OUT of scope for this task"
+    },
+    "known_risks": {
+      "type": "array",
+      "description": "Known risks or sensitive areas identified by the CTO at task creation time",
+      "items": { "type": "string" }
+    },
+    "estimated_files_touched": {
+      "type": "array",
+      "description": "Files or directories the CTO expects will be affected",
+      "items": { "type": "string" }
+    },
+    "gate_audit": {
+      "type": "object",
+      "description": "Immutable record of gate decisions for this task",
+      "properties": {
+        "plan_approval": { "$ref": "#/$defs/gate_record" },
+        "code_review_approval": { "$ref": "#/$defs/gate_record" },
+        "wiring_approval": { "$ref": "#/$defs/gate_record" }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "gate_record": {
+      "type": "object",
+      "required": ["decision", "decided_by", "decided_at"],
+      "properties": {
+        "decision": { "type": "string", "enum": ["APPROVED", "REJECTED"] },
+        "decided_by": { "type": "string" },
+        "decided_at": { "type": "string", "format": "date-time" },
+        "summary": { "type": "string" },
+        "revision": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

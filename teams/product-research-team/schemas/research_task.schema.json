@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "research_task.schema.json",
+  "title": "Research Task",
+  "description": "A research assignment created by the CPO and assigned to a researcher",
+  "type": "object",
+  "required": ["brief_id", "product_name", "product_domain", "vision_hypothesis", "differentiation_question", "research_assignments", "success_definition", "status", "created_by", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "brief_id": {
+      "type": "string",
+      "pattern": "^BRIEF-[0-9]+$",
+      "description": "Unique brief identifier",
+      "examples": ["BRIEF-001"]
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Working name for the product being researched",
+      "minLength": 2
+    },
+    "product_domain": {
+      "type": "string",
+      "description": "Domain or industry category of the product",
+      "examples": ["fintech", "productivity", "health", "e-commerce", "developer tools"]
+    },
+    "vision_hypothesis": {
+      "type": "string",
+      "description": "One sentence on what makes this product potentially exceptional",
+      "minLength": 20
+    },
+    "differentiation_question": {
+      "type": "string",
+      "description": "The single most important question research must answer about competitive edge",
+      "minLength": 20
+    },
+    "target_personas": {
+      "type": "array",
+      "description": "Working list of target user personas",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "research_assignments": {
+      "type": "object",
+      "required": ["researcher_1", "researcher_2"],
+      "properties": {
+        "researcher_1": {
+          "type": "object",
+          "required": ["focus", "primary_questions", "scope", "out_of_scope"],
+          "properties": {
+            "focus": { "type": "string", "const": "workflow_and_journey" },
+            "primary_questions": {
+              "type": "array",
+              "minItems": 2,
+              "items": { "type": "string" }
+            },
+            "scope": { "type": "string" },
+            "out_of_scope": { "type": "string" }
+          }
+        },
+        "researcher_2": {
+          "type": "object",
+          "required": ["focus", "primary_questions", "scope", "out_of_scope"],
+          "properties": {
+            "focus": { "type": "string", "const": "edge_cases_and_differentiation" },
+            "primary_questions": {
+              "type": "array",
+              "minItems": 2,
+              "items": { "type": "string" }
+            },
+            "scope": { "type": "string" },
+            "out_of_scope": { "type": "string" }
+          }
+        }
+      }
+    },
+    "success_definition": {
+      "type": "string",
+      "description": "What DONE looks like for this research engagement",
+      "minLength": 20
+    },
+    "constraints": {
+      "type": "array",
+      "description": "Budget, timeline, or known restrictions",
+      "items": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "BRIEF_RECEIVED",
+        "RESEARCH_PLAN_IN_PROGRESS",
+        "RESEARCH_PLAN_UNDER_REVIEW",
+        "RESEARCH_PLAN_REJECTED",
+        "RESEARCH_IN_PROGRESS",
+        "RESEARCH_FINDINGS_SUBMITTED",
+        "REQUIREMENTS_DRAFTING",
+        "REQUIREMENTS_UNDER_REVIEW",
+        "REQUIREMENTS_REJECTED",
+        "WORKFLOW_COMPLETE"
+      ]
+    },
+    "created_by": {
+      "type": "string",
+      "enum": ["cpo", "user"]
+    },
+    "gate_audit": {
+      "type": "object",
+      "properties": {
+        "researcher_1_plan_approval": { "$ref": "#/$defs/gate_record" },
+        "researcher_2_plan_approval": { "$ref": "#/$defs/gate_record" },
+        "requirements_approval": { "$ref": "#/$defs/gate_record" }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "gate_record": {
+      "type": "object",
+      "required": ["decision", "decided_by", "decided_at"],
+      "properties": {
+        "decision": { "type": "string", "enum": ["APPROVED", "REJECTED"] },
+        "decided_by": { "type": "string" },
+        "decided_at": { "type": "string", "format": "date-time" },
+        "summary": { "type": "string" },
+        "revision": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

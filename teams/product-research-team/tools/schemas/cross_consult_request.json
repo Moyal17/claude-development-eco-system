@@ -1,0 +1,43 @@
+{
+  "name": "cross_consult_request",
+  "description": "Request a product vision or strategy opinion from the CPO. Available to all researchers and PMs at any point during the workflow. The workflow does not pause for non-blocking requests, but blocking requests must be answered before the agent proceeds.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "from", "question", "context"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "from": {
+        "type": "string",
+        "enum": ["researcher_1", "researcher_2", "pm_1", "pm_2"],
+        "description": "Agent requesting the consultation"
+      },
+      "question": {
+        "type": "string",
+        "description": "Specific, context-rich question about product vision, strategy, user priorities, or competitive positioning",
+        "minLength": 20
+      },
+      "context": {
+        "type": "string",
+        "description": "Research findings, user insights, or constraints relevant to the question",
+        "minLength": 10
+      },
+      "urgency": {
+        "type": "string",
+        "enum": ["blocking", "non-blocking"],
+        "description": "blocking = agent cannot proceed without the answer; non-blocking = answer needed before next stage transition",
+        "default": "blocking"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean", "const": true },
+      "consultation_id": { "type": "string" },
+      "message": { "type": "string" }
+    }
+  }
+}

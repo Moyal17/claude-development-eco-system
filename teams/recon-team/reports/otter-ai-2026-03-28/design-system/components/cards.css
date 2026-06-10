@@ -1,0 +1,281 @@
+/* =============================================================
+   OTTER.AI DESIGN SYSTEM — CARD COMPONENTS
+   ============================================================= */
+
+/* ─── Base Card ─── */
+.card {
+  position: relative;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: transform var(--duration-medium) var(--ease-default),
+              box-shadow var(--duration-medium) var(--ease-default);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Card inner content (above noise/overlay layers) */
+.card-inner {
+  position: relative;
+  z-index: var(--z-card-inner);
+  padding: var(--space-8);
+}
+
+/* Noise texture overlay (subtle grain effect) */
+.card-noise {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-base);
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,..."); /* noise pattern */
+  mix-blend-mode: overlay;
+}
+
+/* Cover image layer */
+.card-cover {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-base);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Feature Card (used in landing page feature sections) ─── */
+.card-feature {
+  composes: card;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  padding: var(--space-10);
+}
+
+.card-feature--reversed {
+  direction: rtl;
+}
+.card-feature--reversed > * {
+  direction: ltr;
+}
+
+.card-feature__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.card-feature__media {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.card-feature__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 991px) {
+  .card-feature {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Pricing Card ─── */
+.card-pricing {
+  composes: card;
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  border: 1px solid var(--color-border-default);
+}
+
+.card-pricing--featured {
+  border-color: var(--color-brand-blue);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+.card-pricing--featured::before {
+  content: 'Best Value';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background: var(--gradient-cta);
+  color: var(--color-white);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.card-pricing__header {
+  text-align: center;
+}
+
+.card-pricing__price {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.card-pricing__period {
+  font-size: var(--text-sm);
+  color: var(--color-gray-500);
+}
+
+.card-pricing__features {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.card-pricing__features li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.card-pricing__features li::before {
+  content: '✓';
+  color: var(--color-green);
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+/* ─── Testimonial Card ─── */
+.card-testimonial {
+  composes: card;
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-height: 300px;
+  justify-content: space-between;
+}
+
+.card-testimonial__quote {
+  font-size: var(--text-lg);
+  font-style: italic;
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-primary);
+}
+
+.card-testimonial__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.card-testimonial__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.card-testimonial__name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-sm);
+}
+
+.card-testimonial__title {
+  font-size: var(--text-xs);
+  color: var(--color-gray-500);
+}
+
+/* ─── Press Card ─── */
+.card-press {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.card-press__image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+.card-press__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-gray-500);
+}
+
+.card-press__headline {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.card-press__headline:hover {
+  color: var(--color-brand-blue-dark);
+}
+
+/* ─── Integration Card ─── */
+.card-integration {
+  composes: card;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  border: 1px solid var(--color-border-default);
+}
+
+.card-integration__icon {
+  width: 48px;
+  height: 48px;
+}
+
+.card-integration__name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-base);
+}
+
+.card-integration__description {
+  font-size: var(--text-sm);
+  color: var(--color-gray-500);
+  line-height: var(--leading-normal);
+}
+
+/* ─── Role Benefit Card (sales-agent page) ─── */
+.card-role {
+  composes: card;
+  padding: var(--space-8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.card-role__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-section-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-role__title {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-xl);
+}

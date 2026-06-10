@@ -1,0 +1,71 @@
+{
+  "name": "requirements_submit",
+  "description": "PMs submit the unified requirements document to the CPO for approval. PM cross-consultation must be complete before this tool can be called. The pm_cross_consultation_complete field must be true.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "submitted_by", "document_path", "pm_cross_consultation_complete", "research_traceability", "feature_count", "user_story_count", "edge_case_count", "the_extra_edge_specced"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "submitted_by": {
+        "type": "array",
+        "items": { "type": "string", "enum": ["pm_1", "pm_2"] },
+        "minItems": 2
+      },
+      "plan_version": { "type": "string" },
+      "revision": { "type": "integer", "minimum": 1 },
+      "document_path": {
+        "type": "string",
+        "description": "Path to the requirements document"
+      },
+      "pm_cross_consultation_complete": {
+        "type": "boolean",
+        "const": true,
+        "description": "Must be true. Submission is invalid if PMs have not cross-consulted."
+      },
+      "pm_cross_consultation_log_path": {
+        "type": "string"
+      },
+      "research_traceability": {
+        "type": "boolean",
+        "const": true,
+        "description": "Must be true. Traceability matrix must be in the document."
+      },
+      "feature_count": {
+        "type": "object",
+        "required": ["must", "should", "could", "wont"],
+        "properties": {
+          "must": { "type": "integer", "minimum": 1 },
+          "should": { "type": "integer", "minimum": 0 },
+          "could": { "type": "integer", "minimum": 0 },
+          "wont": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "user_story_count": { "type": "integer", "minimum": 3 },
+      "edge_case_count": { "type": "integer", "minimum": 1 },
+      "the_extra_edge_specced": {
+        "type": "boolean",
+        "const": true,
+        "description": "Must be true. The EXTRA edge from researcher_2 must be a specific requirement."
+      },
+      "mvp_success_metrics": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "type": "string" }
+      },
+      "changelog": {
+        "type": "string",
+        "description": "Required on revision > 1. Summary of what changed since last submission."
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean", "const": true },
+      "message": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "$schema": "https://your-org/agent-team-schema/v1",
+  "team": {
+    "name": "Elite Product Research Team",
+    "version": "1.0.0",
+    "description": "Multi-agent product research and requirements team with CPO-gated workflow, dual-researcher discovery, and collaborative PM requirements synthesis"
+  },
+
+  "agents": {
+    "cpo": {
+      "id": "cpo",
+      "role": "Chief Product Officer",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/cpo.md",
+      "tools": [
+        "research_task_create",
+        "research_plan_approve",
+        "research_plan_reject",
+        "requirements_approve",
+        "requirements_reject",
+        "cross_consult_respond"
+      ],
+      "responsibilities": [
+        "Receive and decompose product briefs into research assignments",
+        "Approve or reject each researcher's research plan before work begins",
+        "Answer cross-consultations from researchers and PMs on product vision and strategy",
+        "Review and approve the final requirements document produced by PMs",
+        "Ensure differentiation and the competitive edge are clearly represented in all outputs",
+        "Close the workflow and hand off the approved requirements document to the CTO team"
+      ],
+      "gate_authority": ["research_plan_approval", "requirements_approval"],
+      "available_for_consultation": true,
+      "does_not_create": ["sprints", "engineering_tasks", "technical_architecture"]
+    },
+
+    "researchers": [
+      {
+        "id": "researcher_1",
+        "role": "Workflow & Journey Researcher",
+        "model": "claude-opus-4-6",
+        "system_prompt": "prompts/researcher.md",
+        "specialization": "workflow",
+        "focus_areas": [
+          "End-to-end product workflow from simple to advanced",
+          "User journey mapping across all personas",
+          "Competitive analysis of existing solutions",
+          "Industry standards and baseline quality expectations",
+          "Common patterns that define a good product in this space"
+        ],
+        "tools": [
+          "research_plan_submit",
+          "findings_submit",
+          "cross_consult_request"
+        ]
+      },
+      {
+        "id": "researcher_2",
+        "role": "Edge Case & Differentiation Researcher",
+        "model": "claude-opus-4-6",
+        "system_prompt": "prompts/researcher.md",
+        "specialization": "differentiation",
+        "focus_areas": [
+          "Edge cases that separate good products from exceptional ones",
+          "User frustrations and pain points with existing competitors",
+          "The EXTRA benefit — untapped opportunity in the market",
+          "Niche power-user needs that build loyalty",
+          "Unique positioning and blue-ocean opportunities"
+        ],
+        "tools": [
+          "research_plan_submit",
+          "findings_submit",
+          "cross_consult_request"
+        ]
+      }
+    ],
+
+    "product_managers": [
+      {
+        "id": "pm_1",
+        "role": "Requirements Architect PM",
+        "model": "claude-sonnet-4-6",
+        "system_prompt": "prompts/product_manager.md",
+        "specialization": "requirements_architecture",
+        "focus_areas": [
+          "Translating research findings into structured, prioritized requirements",
+          "Feature list ownership and MoSCoW prioritization",
+          "MVP vs post-MVP boundary definition",
+          "User stories with testable acceptance criteria",
+          "Workflow clarity and logical feature sequencing"
+        ],
+        "tools": [
+          "requirements_submit",
+          "pm_cross_consult",
+          "cross_consult_request"
+        ]
+      },
+      {
+        "id": "pm_2",
+        "role": "Differentiation & Experience PM",
+        "model": "claude-sonnet-4-6",
+        "system_prompt": "prompts/product_manager.md",
+        "specialization": "differentiation_experience",
+        "focus_areas": [
+          "Ensuring the competitive edge is baked into requirements",
+          "Edge case coverage in product specs",
+          "UX and experience quality requirements",
+          "Constructive challenge of PM 1 decisions",
+          "Reconciliation of tradeoffs between coverage and scope"
+        ],
+        "tools": [
+          "requirements_submit",
+          "pm_cross_consult",
+          "cross_consult_request"
+        ]
+      }
+    ]
+  },
+
+  "workflow": {
+    "task_lifecycle": [
+      {
+        "stage": "BRIEF_RECEIVED",
+        "owner": "cpo",
+        "transitions_to": "RESEARCH_ASSIGNED",
+        "description": "CPO receives product brief, decomposes into research assignments"
+      },
+      {
+        "stage": "RESEARCH_PLAN_IN_PROGRESS",
+        "owner": "researchers",
+        "parallel": true,
+        "transitions_to": "RESEARCH_PLAN_UNDER_REVIEW",
+        "trigger": "research_plan_submit"
+      },
+      {
+        "stage": "RESEARCH_PLAN_UNDER_REVIEW",
+        "owner": "cpo",
+        "gate": "research_plan_approval",
+        "blocking": true,
+        "note": "Each researcher's plan reviewed independently. Both must be approved before research begins.",
+        "on_approve": "RESEARCH_IN_PROGRESS",
+        "on_reject": "RESEARCH_PLAN_IN_PROGRESS"
+      },
+      {
+        "stage": "RESEARCH_IN_PROGRESS",
+        "owner": "researchers",
+        "parallel": true,
+        "transitions_to": "RESEARCH_FINDINGS_SUBMITTED",
+        "trigger": "findings_submit",
+        "note": "Both researchers work concurrently. Each submits findings independently."
+      },
+      {
+        "stage": "REQUIREMENTS_DRAFTING",
+        "owner": "product_managers",
+        "parallel": true,
+        "note": "Both PMs read all research findings. PM cross-consultation is mandatory before final submission.",
+        "transitions_to": "REQUIREMENTS_UNDER_REVIEW",
+        "trigger": "requirements_submit"
+      },
+      {
+        "stage": "REQUIREMENTS_UNDER_REVIEW",
+        "owner": "cpo",
+        "gate": "requirements_approval",
+        "blocking": true,
+        "on_approve": "WORKFLOW_COMPLETE",
+        "on_reject": "REQUIREMENTS_DRAFTING"
+      },
+      {
+        "stage": "WORKFLOW_COMPLETE",
+        "owner": "cpo",
+        "terminal": true,
+        "outputs": [
+          "research_document",
+          "requirements_document"
+        ],
+        "handoff_to": "cto_team"
+      }
+    ]
+  },
+
+  "gates": {
+    "research_plan_approval": {
+      "authority": "cpo",
+      "approve_tool": "research_plan_approve",
+      "reject_tool": "research_plan_reject",
+      "reject_reason_required": true,
+      "applies_per": "researcher"
+    },
+    "requirements_approval": {
+      "authority": "cpo",
+      "approve_tool": "requirements_approve",
+      "reject_tool": "requirements_reject",
+      "reject_reason_required": true,
+      "applies_per": "unified_document"
+    }
+  },
+
+  "cross_consultation": {
+    "requester_roles": ["researcher_1", "researcher_2", "pm_1", "pm_2"],
+    "responder": "cpo",
+    "request_tool": "cross_consult_request",
+    "respond_tool": "cross_consult_respond",
+    "logged_in_audit": true,
+    "pm_to_pm_consultation": {
+      "enabled": true,
+      "tool": "pm_cross_consult",
+      "mandatory_before_requirements_submit": true,
+      "note": "PMs must cross-consult before submitting. The consultation log must appear in the requirements submission."
+    }
+  },
+
+  "outputs": {
+    "research_document": {
+      "template": "templates/research_document.md",
+      "schema": "schemas/research_findings.schema.json",
+      "required_sections": [
+        "executive_summary",
+        "workflow_analysis",
+        "user_journey_maps",
+        "competitive_landscape",
+        "edge_cases_catalog",
+        "differentiation_opportunities",
+        "the_extra_edge"
+      ],
+      "requires_diagrams": true,
+      "diagram_format": "mermaid"
+    },
+    "requirements_document": {
+      "template": "templates/requirements_document.md",
+      "schema": "schemas/requirements_doc.schema.json",
+      "required_sections": [
+        "product_vision",
+        "target_personas",
+        "feature_list_prioritized",
+        "mvp_definition",
+        "post_mvp_roadmap",
+        "user_stories",
+        "edge_case_requirements",
+        "differentiation_requirements",
+        "non_functional_requirements",
+        "out_of_scope"
+      ],
+      "requires_acceptance_criteria": true,
+      "prioritization_framework": "MoSCoW"
+    }
+  },
+
+  "schemas": {
+    "research_task": "schemas/research_task.schema.json",
+    "research_plan": "schemas/research_plan.schema.json",
+    "research_findings": "schemas/research_findings.schema.json",
+    "requirements_doc": "schemas/requirements_doc.schema.json"
+  },
+
+  "tool_schemas": {
+    "research_plan_submit": "tools/schemas/research_plan_submit.json",
+    "research_plan_approve": "tools/schemas/research_plan_approve.json",
+    "research_plan_reject": "tools/schemas/research_plan_reject.json",
+    "findings_submit": "tools/schemas/findings_submit.json",
+    "requirements_submit": "tools/schemas/requirements_submit.json",
+    "requirements_approve": "tools/schemas/requirements_approve.json",
+    "requirements_reject": "tools/schemas/requirements_reject.json",
+    "cross_consult_request": "tools/schemas/cross_consult_request.json",
+    "cross_consult_respond": "tools/schemas/cross_consult_respond.json",
+    "pm_cross_consult": "tools/schemas/pm_cross_consult.json"
+  },
+
+  "audit": {
+    "log_all_gate_decisions": true,
+    "log_all_cross_consultations": true,
+    "log_pm_cross_consultations": true,
+    "require_rejection_reason": true,
+    "immutable_approval_trail": true,
+    "escalate_after_rejection_cycles": 3
+  }
+}

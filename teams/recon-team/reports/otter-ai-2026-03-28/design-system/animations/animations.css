@@ -1,0 +1,280 @@
+/* =============================================================
+   OTTER.AI DESIGN SYSTEM — ANIMATION SYSTEM
+   Libraries used: GSAP (ScrollTrigger), Swiper.js, CSS animations
+   ============================================================= */
+
+:root {
+  /* ─── Easing Functions ─── */
+  --ease-default:    cubic-bezier(0.215, 0.61, 0.355, 1);   /* Otter's primary easing */
+  --ease-in:         cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-out:        cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out:     cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─── Durations ─── */
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-medium:  400ms;
+  --duration-slow:    600ms;
+  --duration-slower:  800ms;
+
+  /* ─── Marquee ─── */
+  --marquee-duration:         80s;
+  --marquee-duration-quick:   36s;
+}
+
+/* =============================================================
+   KEYFRAME ANIMATIONS
+   ============================================================= */
+
+/* Infinite horizontal marquee (logo bars, testimonials) */
+@keyframes marquee-horizontal {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* Slider pagination dot fill */
+@keyframes slider-pagination-fill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* Fade in from below (scroll-triggered sections) */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in (general reveal) */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Scale in (cards, modals) */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide down (tooltip bar, dropdowns) */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typewriter cursor blink */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* =============================================================
+   TRANSITION UTILITIES
+   ============================================================= */
+
+/* Default transition for interactive elements */
+.transition-default {
+  transition: all var(--duration-medium) var(--ease-default);
+}
+
+.transition-fast {
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.transition-colors {
+  transition: color var(--duration-normal) var(--ease-default),
+              background-color var(--duration-normal) var(--ease-default),
+              border-color var(--duration-normal) var(--ease-default);
+}
+
+.transition-transform {
+  transition: transform var(--duration-medium) var(--ease-default);
+}
+
+.transition-opacity {
+  transition: opacity var(--duration-normal) var(--ease-default);
+}
+
+/* =============================================================
+   HOVER PATTERNS (Otter's signature micro-interactions)
+   ============================================================= */
+
+/* Button hover — diagonal lift (Otter's signature) */
+.hover-lift {
+  transition: transform var(--duration-medium) var(--ease-default);
+}
+.hover-lift:hover {
+  transform: translate3d(0.4rem, -0.4rem, 0);
+}
+
+/* Card hover — subtle rise */
+.hover-rise {
+  transition: transform var(--duration-medium) var(--ease-default),
+              box-shadow var(--duration-medium) var(--ease-default);
+}
+.hover-rise:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Link arrow — slide right */
+.hover-arrow {
+  transition: transform var(--duration-medium) var(--ease-default);
+}
+.hover-arrow:hover .arrow-icon {
+  transform: translateX(0.25rem);
+}
+
+/* Link arrow — slide right + up (external links) */
+.hover-arrow-up:hover .arrow-icon {
+  transform: translateX(0.25rem) translateY(-0.25rem);
+}
+
+/* Underline link — grow from left */
+.hover-underline {
+  position: relative;
+  text-decoration: none;
+}
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-brand-blue-dark);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-medium) var(--ease-default);
+}
+.hover-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* =============================================================
+   SCROLL-TRIGGERED ANIMATIONS (use with Intersection Observer or GSAP)
+   ============================================================= */
+
+/* Initial hidden state — add to elements before they animate in */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity var(--duration-slow) var(--ease-default),
+              transform var(--duration-slow) var(--ease-default);
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered children — add delay per child */
+.animate-on-scroll.stagger-1 { transition-delay: 100ms; }
+.animate-on-scroll.stagger-2 { transition-delay: 200ms; }
+.animate-on-scroll.stagger-3 { transition-delay: 300ms; }
+.animate-on-scroll.stagger-4 { transition-delay: 400ms; }
+
+/* =============================================================
+   MARQUEE COMPONENT
+   ============================================================= */
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: inline-flex;
+  gap: var(--space-8);
+  animation: marquee-horizontal var(--marquee-duration) linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-track--fast {
+  animation-duration: var(--marquee-duration-quick);
+}
+
+/* =============================================================
+   ACCORDION / FAQ ANIMATIONS
+   ============================================================= */
+
+.accordion-content {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height var(--duration-normal) var(--ease-default),
+              opacity var(--duration-normal) var(--ease-default);
+}
+
+.accordion-content.is-open {
+  opacity: 1;
+  /* max-height set via JS to content's scrollHeight */
+}
+
+.accordion-icon {
+  transition: transform var(--duration-normal) var(--ease-default),
+              color var(--duration-normal) var(--ease-default);
+  color: var(--color-gray-500);
+}
+
+.accordion-item.is-open .accordion-icon {
+  transform: rotate(45deg);
+  color: var(--color-text-primary);
+}
+
+/* =============================================================
+   TOOLTIP BAR (floating CTA that appears on scroll)
+   ============================================================= */
+
+.tooltip-bar {
+  position: fixed;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%) translateY(3.6rem);
+  opacity: 0;
+  transition: transform 0.35s var(--ease-default),
+              opacity 0.45s var(--ease-default);
+  z-index: var(--z-tooltip);
+}
+
+.tooltip-bar.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* =============================================================
+   NAVBAR FLOATING STATE
+   ============================================================= */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-navbar);
+  transition: box-shadow var(--duration-medium) var(--ease-default);
+}
+
+.navbar.is-floating {
+  box-shadow: var(--shadow-navbar);
+}

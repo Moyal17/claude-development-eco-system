@@ -1,0 +1,71 @@
+/* =============================================================
+   OTTER.AI DESIGN SYSTEM — SPACING & LAYOUT TOKENS
+   ============================================================= */
+
+:root {
+  /* ─── Spacing Scale ─── */
+  --space-0:       0;
+  --space-1:       0.25rem;   /* 4px  */
+  --space-2:       0.5rem;    /* 8px  */
+  --space-3:       0.75rem;   /* 12px */
+  --space-4:       1rem;      /* 16px */
+  --space-5:       1.25rem;   /* 20px */
+  --space-6:       1.5rem;    /* 24px */
+  --space-8:       2rem;      /* 32px */
+  --space-10:      2.5rem;    /* 40px */
+  --space-12:      3rem;      /* 48px */
+  --space-16:      4rem;      /* 64px */
+  --space-20:      5rem;      /* 80px */
+  --space-24:      6rem;      /* 96px */
+  --space-32:      8rem;      /* 128px */
+
+  /* ─── Container Widths ─── */
+  --container-sm:  640px;
+  --container-md:  768px;
+  --container-lg:  1024px;
+  --container-xl:  1200px;
+  --container-2xl: 1440px;
+
+  /* ─── Section Padding (vertical) ─── */
+  --section-padding-sm:  var(--space-12);    /* 48px */
+  --section-padding-md:  var(--space-16);    /* 64px */
+  --section-padding-lg:  var(--space-24);    /* 96px */
+  --section-padding-xl:  var(--space-32);    /* 128px */
+
+  /* ─── Border Radius ─── */
+  --radius-sm:     0.25rem;   /* 4px  — small pills  */
+  --radius-md:     0.5rem;    /* 8px  — buttons      */
+  --radius-lg:     0.75rem;   /* 12px — cards        */
+  --radius-xl:     1rem;      /* 16px — large cards   */
+  --radius-2xl:    1.5rem;    /* 24px — hero cards    */
+  --radius-full:   9999px;    /* pill shape           */
+
+  /* ─── Shadows ─── */
+  --shadow-sm:     0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:     0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:     0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-xl:     0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  /* Otter's exact navbar floating shadow */
+  --shadow-navbar: 0px 1px 1px rgba(0, 0, 0, 0.06),
+                   8px 15px 17px rgba(0, 0, 0, 0.05),
+                   10px 58.5px 41px 16px rgba(24, 57, 89, 0.07);
+
+  /* ─── Breakpoints (reference — use in @media queries) ─── */
+  /* --bp-mobile:     479px   */
+  /* --bp-mobile-lg:  767px   */
+  /* --bp-tablet:     991px   */
+  /* --bp-desktop:    992px   */
+  /* --bp-wide:       1505px  */
+
+  /* ─── Z-Index Scale ─── */
+  --z-base:        0;
+  --z-card:        1;
+  --z-card-inner:  2;
+  --z-dropdown:    10;
+  --z-sticky:      20;
+  --z-navbar:      30;
+  --z-overlay:     40;
+  --z-modal:       50;
+  --z-tooltip:     60;
+}

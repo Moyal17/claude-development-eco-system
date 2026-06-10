@@ -1,0 +1,227 @@
+{
+    "$schema": "https://your-org/agent-team-schema/v1",
+    "team": {
+      "name": "Elite Engineering Team",
+      "version": "1.0.0",
+      "description": "Multi-agent software development team with enforced architectural oversight and dual-review quality gates"
+    },
+
+    "agents": {
+      "cto": {
+        "id": "cto",
+        "role": "Chief Technology Officer",
+        "model": "claude-opus-4-6",
+        "responsibilities": [
+          "Decompose user requests into discrete tasks",
+          "Assign tasks to implementors",
+          "Monitor overall workflow state",
+          "Escalate blockers and architectural disagreements",
+          "Final sign-off once all gates pass"
+        ],
+        "tools": ["task_create", "task_assign", "task_status", "escalate"],
+        "system_prompt_key": "prompts/cto.md"
+      },
+
+      "architect": {
+        "id": "architect",
+        "role": "Codebase Expert Architect",
+        "model": "claude-opus-4-6",
+        "responsibilities": [
+          "Review and approve or reject implementor plans before any code is written",
+          "Ensure plans align with existing architecture, patterns, and constraints",
+          "Answer cross-consultation questions from any agent",
+          "Enforce design principles: SOLID, DRY, security-by-design",
+          "Block implementation if plan is insufficient or risky"
+        ],
+        "tools": ["codebase_read", "grep", "glob", "cross_consult_respond",
+  "plan_approve", "plan_reject"],
+        "system_prompt_key": "prompts/architect.md",
+        "gate": "plan_approval"
+      },
+
+      "code_reviewer": {
+        "id": "code_reviewer",
+        "role": "Code Reviewer",
+        "model": "claude-sonnet-4-6",
+        "responsibilities": [
+          "Review all implementation artifacts after submission",
+          "Assess code quality: readability, maintainability, test coverage",
+          "Audit for functionality correctness against the approved plan",
+          "Audit for security vulnerabilities (OWASP Top 10, injection, auth flaws)",
+          "Issue structured rejection reports with line-level feedback",
+          "Re-review after implementor applies fixes until approved"
+        ],
+        "tools": ["codebase_read", "diff_read", "comment_inline",
+  "review_approve", "review_reject"],
+        "system_prompt_key": "prompts/code_reviewer.md",
+        "gate": "code_review_approval"
+      },
+
+      "wiring_expert": {
+        "id": "wiring_expert",
+        "role": "End-to-End Wiring Expert",
+        "model": "claude-sonnet-4-6",
+        "responsibilities": [
+          "Trace every new or modified feature from entrypoint to output",
+          "Verify routes, event handlers, exports, and bindings are all connected",
+          "Detect dead code, orphaned components, missing registrations",
+          "Confirm backward compatibility — no silent regressions",
+          "Validate production-readiness: env vars, feature flags, migrations, observability hooks",
+          "Issue structured rejection with tracing evidence",
+          "Re-review after fixes until approved"
+        ],
+        "tools": ["codebase_read", "grep", "glob", "trace_call_graph",
+  "wiring_approve", "wiring_reject"],
+        "system_prompt_key": "prompts/wiring_expert.md",
+        "gate": "wiring_approval"
+      },
+
+      "implementors": [
+        {
+          "id": "implementor_1",
+          "role": "Senior Full-Stack Implementor",
+          "model": "claude-sonnet-4-6",
+          "specializations": ["frontend", "backend", "api"],
+          "tools": ["codebase_read", "file_write", "file_edit", "bash",
+  "cross_consult_request", "plan_submit", "implementation_submit"],
+          "system_prompt_key": "prompts/implementor.md"
+        },
+        {
+          "id": "implementor_2",
+          "role": "Senior Backend Implementor",
+          "model": "claude-sonnet-4-6",
+          "specializations": ["backend", "database", "infra"],
+          "tools": ["codebase_read", "file_write", "file_edit", "bash",
+  "cross_consult_request", "plan_submit", "implementation_submit"],
+          "system_prompt_key": "prompts/implementor.md"
+        }
+      ]
+    },
+
+    "workflow": {
+      "task_lifecycle": [
+        {
+          "stage": "TASK_CREATED",
+          "owner": "cto",
+          "description": "CTO decomposes request and creates a task with acceptance criteria",
+          "outputs": ["task_spec"],
+          "transitions_to": "PLAN_IN_PROGRESS"
+        },
+        {
+          "stage": "PLAN_IN_PROGRESS",
+          "owner": "implementor",
+          "description": "Assigned implementor reads the codebase and produces an implementation plan",
+          "outputs": ["implementation_plan"],
+          "transitions_to": "PLAN_UNDER_REVIEW",
+          "allowed_actions": ["cross_consult_request"]
+        },
+        {
+          "stage": "PLAN_UNDER_REVIEW",
+          "owner": "architect",
+          "description": "Architect reviews the plan against the codebase and existing architecture",
+          "outputs": ["plan_review"],
+          "transitions_to_on_approve": "IMPLEMENTATION_IN_PROGRESS",
+          "transitions_to_on_reject": "PLAN_IN_PROGRESS",
+          "gate": "plan_approval",
+          "blocking": true
+        },
+        {
+          "stage": "IMPLEMENTATION_IN_PROGRESS",
+          "owner": "implementor",
+          "description": "Implementor builds strictly according to the architect-approved plan",
+          "outputs": ["code_diff", "test_artifacts"],
+          "transitions_to": "IMPLEMENTATION_UNDER_REVIEW",
+          "allowed_actions": ["cross_consult_request"]
+        },
+        {
+          "stage": "IMPLEMENTATION_UNDER_REVIEW",
+          "owner": ["code_reviewer", "wiring_expert"],
+          "description": "Code reviewer and wiring expert independently review in parallel",
+          "outputs": ["code_review_report", "wiring_report"],
+          "parallel": true,
+          "transitions_to_on_all_approve": "TASK_DONE",
+          "transitions_to_on_any_reject": "FIX_IN_PROGRESS",
+          "gates": ["code_review_approval", "wiring_approval"],
+          "blocking": true
+        },
+        {
+          "stage": "FIX_IN_PROGRESS",
+          "owner": "implementor",
+          "description": "Implementor addresses all rejections from code reviewer and/or wiring expert",
+          "inputs": ["code_review_report", "wiring_report"],
+          "outputs": ["fix_diff"],
+          "transitions_to": "FIX_UNDER_REVIEW"
+        },
+        {
+          "stage": "FIX_UNDER_REVIEW",
+          "owner": ["code_reviewer", "wiring_expert"],
+          "description": "Only reviewers who previously rejected re-review the fixed artifacts",
+          "parallel": true,
+          "transitions_to_on_all_approve": "TASK_DONE",
+          "transitions_to_on_any_reject": "FIX_IN_PROGRESS",
+          "blocking": true,
+          "note": "Loops back until both gates pass"
+        },
+        {
+          "stage": "TASK_DONE",
+          "owner": "cto",
+          "description": "CTO receives completion signal, verifies gate audit trail, closes task",
+          "terminal": true
+        }
+      ]
+    },
+
+    "gates": {
+      "plan_approval": {
+        "required_approvers": ["architect"],
+        "reject_requires_reason": true,
+        "reject_sends_back_to": "PLAN_IN_PROGRESS",
+        "cross_consultation_allowed": true
+      },
+      "code_review_approval": {
+        "required_approvers": ["code_reviewer"],
+        "reject_requires_reason": true,
+        "reject_requires_line_references": true,
+        "reject_sends_back_to": "FIX_IN_PROGRESS"
+      },
+      "wiring_approval": {
+        "required_approvers": ["wiring_expert"],
+        "reject_requires_reason": true,
+        "reject_requires_tracing_evidence": true,
+        "reject_sends_back_to": "FIX_IN_PROGRESS"
+      }
+    },
+
+    "cross_consultation": {
+      "description": "Any agent may request an architectural opinion from the architect mid-task",
+      "requester_roles": ["implementor", "code_reviewer", "wiring_expert"],
+      "responder": "architect",
+      "does_not_pause_workflow": false,
+      "response_required_before": "next_stage_transition"
+    },
+
+    "task_schema": {
+      "required_fields": [
+        "id",
+        "title",
+        "description",
+        "acceptance_criteria",
+        "assigned_implementor",
+        "priority",
+        "created_by"
+      ],
+      "optional_fields": [
+        "depends_on_task_ids",
+        "scope_boundaries",
+        "known_risks",
+        "estimated_files_touched"
+      ]
+    },
+
+    "audit": {
+      "log_all_gate_decisions": true,
+      "log_all_cross_consultations": true,
+      "require_rejection_reason": true,
+      "immutable_approval_trail": true
+    }
+  }

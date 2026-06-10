@@ -1,0 +1,64 @@
+{
+  "name": "pm_cross_consult",
+  "description": "Structured PM-to-PM cross-consultation. Mandatory before requirements submission. Both pm_1 and pm_2 must use this tool to document alignment (or resolved tension) across the 5 mandatory consultation topics before calling requirements_submit.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "from", "to", "topic", "position", "challenge", "evidence"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "from": {
+        "type": "string",
+        "enum": ["pm_1", "pm_2"]
+      },
+      "to": {
+        "type": "string",
+        "enum": ["pm_1", "pm_2"]
+      },
+      "topic": {
+        "type": "string",
+        "enum": [
+          "mvp_scope",
+          "differentiation_requirements",
+          "edge_case_priority",
+          "acceptance_criteria_conflicts",
+          "must_have_vs_should_have"
+        ],
+        "description": "One of the 5 mandatory consultation topics"
+      },
+      "position": {
+        "type": "string",
+        "description": "Your position on this topic",
+        "minLength": 15
+      },
+      "challenge": {
+        "type": "string",
+        "description": "The challenge you are raising or the question you want your counterpart to respond to",
+        "minLength": 15
+      },
+      "evidence": {
+        "type": "string",
+        "description": "Research finding or user insight supporting your position"
+      },
+      "resolution": {
+        "type": "string",
+        "description": "Fill in when this topic reaches resolution — describe the agreed outcome"
+      },
+      "resolution_type": {
+        "type": "string",
+        "enum": ["consensus", "pm_1_position_adopted", "pm_2_position_adopted", "compromise", "escalated_to_cpo"],
+        "description": "How this topic was resolved"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "logged": { "type": "boolean", "const": true },
+      "topic": { "type": "string" },
+      "consultation_id": { "type": "string" }
+    }
+  }
+}

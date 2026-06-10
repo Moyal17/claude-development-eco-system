@@ -1,0 +1,46 @@
+{
+  "name": "research_plan_approve",
+  "description": "CPO approves a researcher's research plan. Calling this tool unblocks the researcher to begin executing their research. Only the CPO may call this tool.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "researcher_id", "plan_version", "summary"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "researcher_id": {
+        "type": "string",
+        "enum": ["researcher_1", "researcher_2"]
+      },
+      "plan_version": {
+        "type": "string",
+        "description": "The plan_version timestamp being approved"
+      },
+      "summary": {
+        "type": "string",
+        "description": "One sentence confirming why the plan is approved",
+        "minLength": 15
+      },
+      "warnings": {
+        "type": "array",
+        "description": "Non-blocking concerns the researcher should be aware of",
+        "items": {
+          "type": "object",
+          "properties": {
+            "area": { "type": "string" },
+            "detail": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "approved": { "type": "boolean", "const": true },
+      "gate": { "type": "string", "const": "research_plan_approval" },
+      "decided_at": { "type": "string", "format": "date-time" }
+    }
+  }
+}

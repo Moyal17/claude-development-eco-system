@@ -1,0 +1,231 @@
+{
+  "$schema": "https://your-org/agent-team-schema/v1",
+  "team": {
+    "name": "Elite Engineering Team",
+    "version": "1.0.0",
+    "description": "Multi-agent software development team with enforced architectural oversight and dual-review quality gates"
+  },
+
+  "agents": {
+    "cto": {
+      "id": "cto",
+      "role": "Chief Technology Officer",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/cto.md",
+      "tools": [
+        "task_create",
+        "task_assign",
+        "task_status"
+      ],
+      "responsibilities": [
+        "Decompose user requests into discrete tasks using tasks/decomposition.md",
+        "Assign tasks to implementors",
+        "Monitor workflow state across all active tasks",
+        "Enforce gate protocol",
+        "Close tasks only after full gate audit trail"
+      ]
+    },
+
+    "architect": {
+      "id": "architect",
+      "role": "Codebase Expert Architect",
+      "model": "claude-opus-4-6",
+      "system_prompt": "prompts/architect.md",
+      "tools": [
+        "codebase_read",
+        "grep",
+        "glob",
+        "plan_approve",
+        "plan_reject",
+        "cross_consult_respond"
+      ],
+      "gate_authority": ["plan_approval"],
+      "available_for_consultation": true
+    },
+
+    "code_reviewer": {
+      "id": "code_reviewer",
+      "role": "Code Reviewer",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/code_reviewer.md",
+      "tools": [
+        "codebase_read",
+        "diff_read",
+        "review_approve",
+        "review_reject"
+      ],
+      "gate_authority": ["code_review_approval"],
+      "runs_parallel_with": ["wiring_expert"]
+    },
+
+    "wiring_expert": {
+      "id": "wiring_expert",
+      "role": "End-to-End Wiring Expert",
+      "model": "claude-sonnet-4-6",
+      "system_prompt": "prompts/wiring_expert.md",
+      "tools": [
+        "codebase_read",
+        "grep",
+        "glob",
+        "wiring_approve",
+        "wiring_reject"
+      ],
+      "gate_authority": ["wiring_approval"],
+      "runs_parallel_with": ["code_reviewer"]
+    },
+
+    "implementors": [
+      {
+        "id": "implementor_1",
+        "role": "Senior Full-Stack Implementor",
+        "model": "claude-sonnet-4-6",
+        "system_prompt": "prompts/implementor.md",
+        "specializations": ["frontend", "backend", "api"],
+        "tools": [
+          "codebase_read",
+          "file_write",
+          "file_edit",
+          "bash",
+          "plan_submit",
+          "implementation_submit",
+          "cross_consult_request"
+        ]
+      },
+      {
+        "id": "implementor_2",
+        "role": "Senior Backend Implementor",
+        "model": "claude-sonnet-4-6",
+        "system_prompt": "prompts/implementor.md",
+        "specializations": ["backend", "database", "infra"],
+        "tools": [
+          "codebase_read",
+          "file_write",
+          "file_edit",
+          "bash",
+          "plan_submit",
+          "implementation_submit",
+          "cross_consult_request"
+        ]
+      }
+    ]
+  },
+
+  "workflow": {
+    "task_lifecycle": [
+      {
+        "stage": "TASK_CREATED",
+        "owner": "cto",
+        "transitions_to": "PLAN_IN_PROGRESS"
+      },
+      {
+        "stage": "PLAN_IN_PROGRESS",
+        "owner": "implementor",
+        "transitions_to": "PLAN_UNDER_REVIEW",
+        "trigger": "plan_submit"
+      },
+      {
+        "stage": "PLAN_UNDER_REVIEW",
+        "owner": "architect",
+        "gate": "plan_approval",
+        "blocking": true,
+        "on_approve": "IMPLEMENTATION_IN_PROGRESS",
+        "on_reject": "PLAN_IN_PROGRESS"
+      },
+      {
+        "stage": "IMPLEMENTATION_IN_PROGRESS",
+        "owner": "implementor",
+        "transitions_to": "IMPLEMENTATION_UNDER_REVIEW",
+        "trigger": "implementation_submit"
+      },
+      {
+        "stage": "IMPLEMENTATION_UNDER_REVIEW",
+        "owners": ["code_reviewer", "wiring_expert"],
+        "parallel": true,
+        "gates": ["code_review_approval", "wiring_approval"],
+        "blocking": true,
+        "on_all_approve": "TASK_DONE",
+        "on_any_reject": "FIX_IN_PROGRESS"
+      },
+      {
+        "stage": "FIX_IN_PROGRESS",
+        "owner": "implementor",
+        "transitions_to": "FIX_UNDER_REVIEW",
+        "trigger": "implementation_submit"
+      },
+      {
+        "stage": "FIX_UNDER_REVIEW",
+        "note": "Only reviewers who previously rejected re-review. Loop repeats until all gates pass.",
+        "owners": ["code_reviewer", "wiring_expert"],
+        "only_rejecting_reviewers": true,
+        "parallel": true,
+        "gates": ["code_review_approval", "wiring_approval"],
+        "blocking": true,
+        "on_all_approve": "TASK_DONE",
+        "on_any_reject": "FIX_IN_PROGRESS"
+      },
+      {
+        "stage": "TASK_DONE",
+        "owner": "cto",
+        "terminal": true,
+        "requires_gate_audit_trail": true
+      }
+    ]
+  },
+
+  "gates": {
+    "plan_approval": {
+      "authority": "architect",
+      "approve_tool": "plan_approve",
+      "reject_tool": "plan_reject",
+      "reject_reason_required": true
+    },
+    "code_review_approval": {
+      "authority": "code_reviewer",
+      "approve_tool": "review_approve",
+      "reject_tool": "review_reject",
+      "reject_line_references_required": true
+    },
+    "wiring_approval": {
+      "authority": "wiring_expert",
+      "approve_tool": "wiring_approve",
+      "reject_tool": "wiring_reject",
+      "reject_trace_required": true
+    }
+  },
+
+  "cross_consultation": {
+    "requester_roles": ["implementor_1", "implementor_2", "code_reviewer", "wiring_expert"],
+    "responder": "architect",
+    "request_tool": "cross_consult_request",
+    "respond_tool": "cross_consult_respond",
+    "logged_in_task_audit": true
+  },
+
+  "schemas": {
+    "task": "schemas/task.schema.json",
+    "plan": "schemas/plan.schema.json",
+    "review_report": "schemas/review_report.schema.json",
+    "wiring_report": "schemas/wiring_report.schema.json"
+  },
+
+  "tool_schemas": {
+    "plan_submit": "tools/schemas/plan_submit.json",
+    "plan_approve": "tools/schemas/plan_approve.json",
+    "plan_reject": "tools/schemas/plan_reject.json",
+    "implementation_submit": "tools/schemas/implementation_submit.json",
+    "review_approve": "tools/schemas/review_approve.json",
+    "review_reject": "tools/schemas/review_reject.json",
+    "wiring_approve": "tools/schemas/wiring_approve.json",
+    "wiring_reject": "tools/schemas/wiring_reject.json",
+    "cross_consult_request": "tools/schemas/cross_consult_request.json",
+    "cross_consult_respond": "tools/schemas/cross_consult_respond.json"
+  },
+
+  "audit": {
+    "log_all_gate_decisions": true,
+    "log_all_cross_consultations": true,
+    "require_rejection_reason": true,
+    "immutable_approval_trail": true,
+    "escalate_after_rejection_cycles": 3
+  }
+}

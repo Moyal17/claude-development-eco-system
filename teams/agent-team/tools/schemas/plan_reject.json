@@ -1,0 +1,45 @@
+{
+  "name": "plan_reject",
+  "description": "Reject an implementor's submitted plan. Only callable by the architect. The implementor must revise the plan and resubmit. No code may be written until a revised plan is approved.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "plan_version", "summary", "concerns"],
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "plan_version": {
+        "type": "string",
+        "description": "The plan_version timestamp being rejected"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Overall reason for rejection in one sentence"
+      },
+      "concerns": {
+        "type": "array",
+        "description": "Specific concerns the implementor must address in their revised plan",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["severity", "area", "detail", "suggested_fix"],
+          "properties": {
+            "severity": { "type": "string", "enum": ["blocking", "warning"] },
+            "area": { "type": "string", "description": "Which part of the plan is affected" },
+            "detail": { "type": "string", "description": "Specific description of the problem" },
+            "suggested_fix": { "type": "string", "description": "What the revised plan should say instead" }
+          }
+        }
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "rejected": { "type": "boolean", "const": true },
+      "task_id": { "type": "string" },
+      "new_task_status": { "type": "string", "const": "PLAN_IN_PROGRESS" }
+    }
+  }
+}

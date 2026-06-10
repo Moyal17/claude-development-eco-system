@@ -1,0 +1,49 @@
+/* =============================================================
+   OTTER.AI DESIGN SYSTEM — COLOR TOKENS
+   Extracted: 2026-03-28
+   Source: otter.ai (landing, sales-agent, education-agent, pricing, press)
+   ============================================================= */
+
+:root {
+  /* ─── Brand Primary ─── */
+  --color-brand-blue:        #144fff;
+  --color-brand-blue-dark:   #1D25E2;
+  --color-brand-navy:        #293a52;
+
+  /* ─── Neutrals ─── */
+  --color-black:             #000000;
+  --color-white:             #ffffff;
+  --color-gray-100:          #F7F8FA;
+  --color-gray-200:          #E7EAEE;
+  --color-gray-400:          #8896AA;
+  --color-gray-500:          #8294A5;
+  --color-gray-700:          rgb(34, 40, 47);
+  --color-gray-900:          #1a1a1a;
+
+  /* ─── Accent Palette (used in experiments/highlights) ─── */
+  --color-cyan:              #52d0f0;
+  --color-green:             #19c185;
+  --color-purple:            #9b51e0;
+  --color-orange:            #f97316;
+  --color-pink:              #ec4899;
+  --color-yellow:            #eab308;
+
+  /* ─── Semantic ─── */
+  --color-text-primary:      #000000;
+  --color-text-secondary:    rgb(34, 40, 47);
+  --color-text-muted:        rgba(34, 40, 47, 0.5);
+  --color-text-inverse:      #ffffff;
+  --color-text-link:         #1D25E2;
+
+  --color-bg-primary:        #ffffff;
+  --color-bg-dark:           #293a52;
+  --color-bg-section-alt:    #F7F8FA;
+
+  --color-border-default:    #E7EAEE;
+  --color-border-active:     #144fff;
+
+  /* ─── Gradients ─── */
+  --gradient-hot:            linear-gradient(135deg, #f97316 0%, #ec4899 50%, #9b51e0 100%);
+  --gradient-cta:            linear-gradient(135deg, #144fff 0%, #1D25E2 100%);
+  --gradient-hero-overlay:   linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 100%);
+}

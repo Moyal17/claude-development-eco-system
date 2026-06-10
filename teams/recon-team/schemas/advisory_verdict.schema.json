@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "advisory-verdict.schema.json",
+  "title": "Advisory Verdict",
+  "description": "Structured verdict from Devil's Advocate or Realist Angel",
+  "type": "object",
+  "required": ["report_type", "task_id", "submitted_by", "target", "verdict", "verdict_summary", "submitted_at"],
+  "properties": {
+    "report_type": {
+      "type": "string",
+      "enum": ["devils_advocate_verdict", "realist_angel_verdict"]
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^RECON-[0-9]+$"
+    },
+    "submitted_by": {
+      "type": "string",
+      "enum": ["devils_advocate", "realist_angel"]
+    },
+    "target": { "type": "string" },
+    "verdict": {
+      "type": "string",
+      "description": "Devil: PROCEED_WITH_CAUTION | SERIOUS_CONCERNS | RECOMMEND_AGAINST. Angel: WORTH_THE_BET | MARGINAL | NOT_WORTH_IT"
+    },
+    "verdict_summary": {
+      "type": "string",
+      "minLength": 20
+    },
+    "concessions": {
+      "type": "array",
+      "description": "Points the advisory role concedes to the other side",
+      "items": { "type": "string" }
+    },
+    "submitted_at": { "type": "string", "format": "date-time" }
+  }
+}

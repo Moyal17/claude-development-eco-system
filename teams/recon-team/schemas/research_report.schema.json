@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "research-report.schema.json",
+  "title": "Research Report",
+  "description": "Base schema for specialist research reports (Web Researcher, Market Researcher)",
+  "type": "object",
+  "required": ["report_type", "task_id", "submitted_by", "target", "sections", "sources", "submitted_at"],
+  "properties": {
+    "report_type": {
+      "type": "string",
+      "enum": ["web_research_report", "market_research_report"]
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^RECON-[0-9]+$"
+    },
+    "submitted_by": {
+      "type": "string",
+      "enum": ["web_researcher", "market_researcher"]
+    },
+    "target": {
+      "type": "string",
+      "description": "URL or product name being researched"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "Revision number — increments on each resubmission after challenge",
+      "minimum": 1,
+      "default": 1
+    },
+    "sections": {
+      "type": "object",
+      "description": "Report-specific sections — see individual report format in agent prompts"
+    },
+    "sources": {
+      "type": "array",
+      "description": "All sources consulted, with URLs and credibility ratings",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["url", "description"],
+        "properties": {
+          "url": { "type": "string" },
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "credibility": { "type": "string", "enum": ["high", "medium", "low"] },
+          "accessed_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

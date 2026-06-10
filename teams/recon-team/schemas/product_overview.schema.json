@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "product-overview.schema.json",
+  "title": "Product Overview Report",
+  "description": "Comprehensive product overview and gap analysis synthesized from all specialist reports",
+  "type": "object",
+  "required": ["report_type", "task_id", "submitted_by", "target", "sections", "submitted_at"],
+  "properties": {
+    "report_type": {
+      "type": "string",
+      "enum": ["product_overview_report", "gap_analysis"]
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^RECON-[0-9]+$"
+    },
+    "submitted_by": {
+      "type": "string",
+      "const": "product_analyst"
+    },
+    "target": { "type": "string" },
+    "sections": {
+      "type": "object",
+      "description": "See product_analyst.md for full section format"
+    },
+    "cross_reference_notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "observation": { "type": "string" },
+          "reports_involved": { "type": "array", "items": { "type": "string" } },
+          "implication": { "type": "string" }
+        }
+      }
+    },
+    "submitted_at": { "type": "string", "format": "date-time" }
+  }
+}

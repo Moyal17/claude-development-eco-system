@@ -1,0 +1,134 @@
+# jira-on-merge.yml — transition Jira ticket to Done when its PR merges to main.
+#
+# Source: claude-development-eco-system templates. Copy into <target-repo>/.github/workflows/.
+#
+# Required repo secrets:
+#   - JIRA_BASE_URL  (e.g., https://yourorg.atlassian.net — no trailing slash)
+#   - JIRA_EMAIL     (Atlassian account email tied to the token)
+#   - JIRA_API_TOKEN (https://id.atlassian.com/manage-profile/security/api-tokens)
+#
+# Optional repo secrets:
+#   - JIRA_DONE_TRANSITION_NAME  (default: "Done"; override if your workflow uses "Resolved" / etc.)
+#
+# Triggers when a PR is merged into the default branch. Reads the PR body for a
+# `Jira-Ticket: <KEY>` line (emitted by /ready-for-review). Transitions the ticket
+# to Done. Idempotent — no-op if already Done.
+
+name: Jira → Done on merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  transition:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Extract Jira ticket key from PR body
+        id: extract
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+          KEY=$(printf '%s' "$PR_BODY" \
+            | grep -oE '^Jira-Ticket:[[:space:]]+[A-Z][A-Z0-9_]+-[0-9]+' \
+            | head -n 1 \
+            | sed -E 's/^Jira-Ticket:[[:space:]]+//' || true)
+          if [ -z "$KEY" ]; then
+            echo "no Jira-Ticket: line found in PR body — skipping transition"
+            echo "key=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Transition ticket to Done
+        if: steps.extract.outputs.key != ''
+        env:
+          KEY: ${{ steps.extract.outputs.key }}
+          BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          EMAIL: ${{ secrets.JIRA_EMAIL }}
+          TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          DONE_NAME: ${{ secrets.JIRA_DONE_TRANSITION_NAME || 'Done' }}
+        run: |
+          set -euo pipefail
+          python3 << 'PYEOF'
+          import base64, json, os, sys, urllib.request
+
+          base_url = os.environ["BASE_URL"].rstrip("/")
+          email = os.environ["EMAIL"]
+          token = os.environ["TOKEN"]
+          key = os.environ["KEY"]
+          done_name = os.environ.get("DONE_NAME", "Done").strip()
+
+          auth = base64.b64encode(f"{email}:{token}".encode()).decode("ascii")
+          headers = {
+              "Authorization": f"Basic {auth}",
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+          }
+
+          def call(method, url, body=None):
+              data = json.dumps(body).encode() if body is not None else None
+              req = urllib.request.Request(url, data=data, method=method, headers=headers)
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as resp:
+                      return resp.status, resp.read()
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read()
+
+          # Skip if already Done.
+          status_code, body = call("GET", f"{base_url}/rest/api/3/issue/{key}?fields=status")
+          if status_code >= 300:
+              print(f"warning: GET status returned {status_code}; skipping")
+              sys.exit(0)
+          ticket = json.loads(body)
+          current = ticket["fields"]["status"]["name"]
+          category = ticket["fields"]["status"]["statusCategory"]["key"]
+          if current.strip().lower() == done_name.strip().lower() or category == "done":
+              print(f"info: {key} is already in '{current}' (done category) — no-op")
+              sys.exit(0)
+
+          # List transitions, pick one whose target name matches DONE_NAME.
+          status_code, body = call("GET", f"{base_url}/rest/api/3/issue/{key}/transitions")
+          if status_code >= 300:
+              print(f"error: GET transitions returned {status_code}")
+              sys.exit(1)
+          transitions = json.loads(body).get("transitions", [])
+          chosen = None
+          for t in transitions:
+              if t.get("to", {}).get("name", "").strip().lower() == done_name.lower():
+                  chosen = t
+                  break
+          if chosen is None:
+              # Fallback: any transition whose target category is 'done'.
+              for t in transitions:
+                  if t.get("to", {}).get("statusCategory", {}).get("key") == "done":
+                      chosen = t
+                      break
+          if chosen is None:
+              names = [t.get("name") for t in transitions]
+              print(f"error: no Done transition found from '{current}'. Available: {names}")
+              sys.exit(1)
+
+          status_code, body = call(
+              "POST",
+              f"{base_url}/rest/api/3/issue/{key}/transitions",
+              {"transition": {"id": chosen["id"]}},
+          )
+          if status_code < 300:
+              print(f"transitioned {key}: '{current}' → '{chosen['to']['name']}'")
+          else:
+              print(f"error: transition POST returned {status_code}: {body.decode(errors='replace')}")
+              sys.exit(1)
+          PYEOF

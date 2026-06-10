@@ -1,0 +1,53 @@
+{
+  "name": "cross_consult_respond",
+  "description": "Respond to a cross-consultation request. Only callable by the architect. Delivers a binding architectural opinion to the requesting agent.",
+  "input_schema": {
+    "type": "object",
+    "required": ["consultation_id", "task_id", "to", "answer"],
+    "properties": {
+      "consultation_id": {
+        "type": "string",
+        "description": "The consultation_id returned when the request was submitted"
+      },
+      "task_id": {
+        "type": "string",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "to": {
+        "type": "string",
+        "enum": ["implementor_1", "implementor_2", "code_reviewer", "wiring_expert"]
+      },
+      "answer": {
+        "type": "string",
+        "description": "Direct, reasoned architectural opinion. Reference specific files, patterns, or prior decisions where relevant.",
+        "minLength": 20
+      },
+      "references": {
+        "type": "array",
+        "description": "Specific files or patterns in the codebase that support this answer",
+        "items": {
+          "type": "object",
+          "required": ["path"],
+          "properties": {
+            "path": { "type": "string" },
+            "line": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        "default": []
+      },
+      "plan_amendment_required": {
+        "type": "boolean",
+        "description": "Set to true if the answer reveals a flaw that requires the implementor to submit a plan amendment before proceeding",
+        "default": false
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "delivered": { "type": "boolean", "const": true },
+      "consultation_id": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "cross_consult_respond",
+  "description": "CPO responds to a cross-consultation request from a researcher or PM. Only the CPO may call this tool.",
+  "input_schema": {
+    "type": "object",
+    "required": ["consultation_id", "from", "to", "answer"],
+    "properties": {
+      "consultation_id": {
+        "type": "string",
+        "description": "ID from the original cross_consult_request"
+      },
+      "from": {
+        "type": "string",
+        "const": "cpo"
+      },
+      "to": {
+        "type": "string",
+        "enum": ["researcher_1", "researcher_2", "pm_1", "pm_2"]
+      },
+      "answer": {
+        "type": "string",
+        "description": "Direct, reasoned answer grounded in the product brief and vision",
+        "minLength": 20
+      },
+      "references": {
+        "type": "array",
+        "description": "Specific brief sections, user insights, or prior decisions referenced in the answer",
+        "items": { "type": "string" }
+      },
+      "plan_implication": {
+        "type": "string",
+        "description": "If this answer reveals a gap in previously approved work, describe what must change"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "responded": { "type": "boolean", "const": true },
+      "consultation_id": { "type": "string" }
+    }
+  }
+}

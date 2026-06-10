@@ -1,0 +1,39 @@
+{
+  "_comment": "claude-development-eco-system hooks fragment. Merge the 'hooks' block into your ~/.claude/settings.json. All hooks are opt-in; review each before enabling. Replace ECO_ROOT with the absolute path to your claude-development-eco-system clone.",
+  "_eco_root_example": "/Users/<you>/sourceControl/claude-development-eco-system",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "_description": "Auto-format TypeScript/JavaScript files after edits. Requires prettier on PATH or local to the repo.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/user/sourceControl/claude-development-eco-system/hooks/posttooluse-format-ts.sh"
+          }
+        ]
+      },
+      {
+        "_description": "Auto-format Python files after edits. Requires ruff and black on PATH or local to the repo.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/user/sourceControl/claude-development-eco-system/hooks/posttooluse-format-py.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "_description": "Inject a one-line banner showing the current plan stage if a plan file is detected. Informational only — never blocks.",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/user/sourceControl/claude-development-eco-system/hooks/userpromptsubmit-stage-banner.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+# Personal CLAUDE.md (User Working Style)
+
+This file captures durable working-style preferences that apply to **every** Claude Code session, regardless of project. When a project has its own `CLAUDE.md` at the repo root, the project-level file overrides this one for project-specific concerns; this file remains authoritative for personal preferences.
+
+Installed location: `~/.claude/CLAUDE.md`
+Template source: `~/sourceControl/claude-development-eco-system/templates/personal-claude-md.template`
+
+---
+
+## How I work
+
+- Direct, terse responses. No trailing summaries unless I ask.
+- When you have an idea or recommendation, lead with the recommendation and one tradeoff. Don't fan out into options unless I ask.
+- For exploratory questions, 2–3 sentences with a recommendation.
+- I prefer action over deliberation. If a task is reasonable and reversible, just do it.
+- I will course-correct mid-task; that's normal, not a sign you went wrong.
+
+## Estimation convention
+
+- **1 story point = 1 dev-day (8 hours)**, not Fibonacci complexity. The eco-system's `/feature` Phase C uses `max(1, ceil(hours / 8))` for SP from estimated hours.
+
+## Eco-system locations
+
+- **Eco-system source of truth:** `~/sourceControl/claude-development-eco-system/`
+  Files under `~/.claude/skills/` and `~/.claude/agents/` are symlinks managed by `install.sh`. Edit the source, never the symlink target.
+- **PM eco-system:** `~/sourceControl/claude-pm-eco-system/`
+- **Memory system:** `~/.claude/projects/-Users-user/memory/` (Claude's auto-memory; declarative rules live here, in this file, or in project CLAUDE.md)
+- **Jira config (canonical):** `~/sourceControl/claude-development-eco-system/jira.json`. The `~/.claude-development-eco-system/jira.json` path must be a symlink, not a duplicate.
+
+## Active commands (eco-system v0.3.0)
+
+Five explicit commands; everything else auto-activates:
+
+| Command | When |
+|---|---|
+| `/learn` | First 1–2 weeks in a new repo. Multi-session, resumable. Writes only to `docs/onboarding/`. |
+| `/feature <description>` | New feature on existing platform. Internal phases A–G. Use `--jira KEY`, `--no-pr`, `--mode=fast`, `--resume <slug>`. |
+| `/quick-fix <bug>` | Hotfix, < 30 lines, < 3 files, single obvious root cause. Bails to `/feature` if the joint scan shows it's bigger. |
+| `/code-review` | Standalone diff review (9 dimensions). |
+| `/done <slug>` | After PR merge: stamp actuals, append calibration row, archive plan. |
+
+Auto-activating knowledge skills (no slash command):
+`context-engineering`, `incremental-implementation`, `debugging-and-error-recovery`, `source-driven-development`.
+
+The dev team role prompts at `~/sourceControl/claude-teams/agent-team/prompts/` are the binding contract for all gate work; never modify them.
+
+## Permission posture
+
+- I run in auto mode by default. Routine, low-risk, reversible actions: just do them.
+- Pause and confirm for: destructive operations (rm -rf, git reset --hard, force-push, dropping tables), shared-state changes (Slack/email/PR comments unless I asked), uploading content to third-party tools.
+- Never share secrets to third parties unless I explicitly authorized both the secret and the destination.
+
+## Memory vs CLAUDE.md vs project CLAUDE.md
+
+- **This file (`~/.claude/CLAUDE.md`)** — declarative durable rules about how *I* work
+- **Memory (`~/.claude/projects/-Users-user/memory/`)** — accumulated facts ("user is a data scientist", "user prefers X over Y") that build up from conversations
+- **Project CLAUDE.md (`<repo>/CLAUDE.md`)** — declarative rules about how *that codebase* works (commands, conventions, boundaries). Overrides this file for project-specific concerns.
+- The eco-system's `/learn` skill drafts a candidate project CLAUDE.md at `docs/onboarding/claude-md-draft.md` after onboarding.
+
+## What NOT to do
+
+- Don't ask "should I proceed?" for routine work — just proceed.
+- Don't write files I didn't ask for: no plan documents, decision docs, intermediate analysis files unless I asked.
+- Don't add comments to code that just describe what the code does.
+- Don't suggest `/schedule` follow-ups unless this turn produced a named artifact with a real future date.
+- Don't run `/ultrareview` autonomously — it's user-triggered.
+
+## Contact
+
+- Email: moyal17@gmail.com

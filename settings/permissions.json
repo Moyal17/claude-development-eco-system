@@ -1,0 +1,37 @@
+{
+  "_comment": "claude-development-eco-system permissions fragment. Merge the 'permissions' block into your ~/.claude/settings.json. These pre-allow safe read-only commands so research runs don't fire permission prompts on every grep.",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(file:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(tree:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git ls-files:*)",
+      "Bash(git blame:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(npm ls:*)",
+      "Bash(pnpm ls:*)",
+      "Bash(yarn list:*)",
+      "Bash(pip list:*)",
+      "Bash(pip show:*)",
+      "Bash(node --version)",
+      "Bash(python --version)",
+      "Bash(python3 --version)"
+    ]
+  }
+}

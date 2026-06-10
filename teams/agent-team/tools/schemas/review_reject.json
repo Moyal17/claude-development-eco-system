@@ -1,0 +1,39 @@
+{
+  "name": "review_reject",
+  "description": "Reject the implementation due to code quality, functionality, or security findings. Only callable by code_reviewer. Sends the task back to FIX_IN_PROGRESS. The implementor must address all blocking findings and resubmit.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "revision", "summary", "findings"],
+    "properties": {
+      "task_id": { "type": "string", "pattern": "^TASK-[0-9]+$" },
+      "revision": { "type": "integer", "minimum": 1 },
+      "summary": { "type": "string", "description": "One sentence overall rejection reason" },
+      "findings": {
+        "type": "array",
+        "description": "All findings. Must contain at least one blocking finding to reject.",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["severity", "file", "dimension", "issue", "fix"],
+          "properties": {
+            "severity": { "type": "string", "enum": ["blocking", "warning", "suggestion"] },
+            "file": { "type": "string" },
+            "line": { "type": "string" },
+            "dimension": { "type": "string", "enum": ["functionality", "quality", "tests", "security", "maintainability"] },
+            "issue": { "type": "string", "minLength": 10 },
+            "fix": { "type": "string", "minLength": 10 }
+          }
+        }
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "gate": { "type": "string", "const": "code_review_approval" },
+      "rejected": { "type": "boolean", "const": true },
+      "task_id": { "type": "string" },
+      "new_task_status": { "type": "string", "const": "FIX_IN_PROGRESS" }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "challenge-report.schema.json",
+  "title": "Cross-Challenge Report",
+  "description": "Structured challenge from one specialist to another's report",
+  "type": "object",
+  "required": ["task_id", "challenger", "challenged_report", "challenges", "submitted_at"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^RECON-[0-9]+$"
+    },
+    "challenger": {
+      "type": "string",
+      "description": "ID of the agent issuing the challenge"
+    },
+    "challenged_report": {
+      "type": "string",
+      "description": "Report type being challenged"
+    },
+    "challenged_agent": {
+      "type": "string",
+      "description": "ID of the agent whose report is being challenged"
+    },
+    "challenges": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["claim", "objection", "severity"],
+        "properties": {
+          "claim": {
+            "type": "string",
+            "description": "The specific claim being challenged"
+          },
+          "section": {
+            "type": "string",
+            "description": "Which section of the report contains this claim"
+          },
+          "objection": {
+            "type": "string",
+            "description": "Why this claim may be incorrect or unsupported"
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Supporting evidence for the objection"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["blocking", "warning"],
+            "description": "blocking = report must be revised; warning = note but not blocking"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": ["defended", "revised", "withdrawn", "pending"],
+            "default": "pending"
+          }
+        }
+      }
+    },
+    "overall_assessment": {
+      "type": "string",
+      "description": "One sentence — is this report trustworthy or does it need revision?"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,87 @@
+/* =============================================================
+   OTTER.AI DESIGN SYSTEM — GLOBAL STYLES (Entry Point)
+   Import this file in your React app's main.jsx/main.tsx
+   ============================================================= */
+
+/* ─── Font ─── */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+/* ─── Tailwind ─── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design System Tokens ─── */
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+
+/* ─── Animations ─── */
+@import './animations/animations.css';
+
+/* ─── Components ─── */
+@import './components/buttons.css';
+@import './components/cards.css';
+@import './components/navigation.css';
+
+/* ─── Layouts ─── */
+@import './layouts/sections.css';
+
+/* =============================================================
+   BASE RESETS (Otter-style)
+   ============================================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* Otter's rich text resets */
+  .rich-text > *:first-child { margin-top: 0; }
+  .rich-text > *:last-child { margin-bottom: 0; }
+  .rich-text li::marker { color: var(--color-text-primary); }
+
+  /* Selection color */
+  ::selection {
+    background: rgba(20, 79, 255, 0.15);
+    color: inherit;
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "research_plan_submit",
+  "description": "Submit a research plan to the CPO for approval. Must be called before any research work begins. The workflow is BLOCKED until the CPO approves this plan.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "researcher_id", "plan"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "researcher_id": {
+        "type": "string",
+        "enum": ["researcher_1", "researcher_2"]
+      },
+      "plan": {
+        "$ref": "../../schemas/research_plan.schema.json",
+        "description": "Complete research plan matching the research_plan schema"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "submitted": { "type": "boolean", "const": true },
+      "plan_version": { "type": "string" },
+      "message": { "type": "string" }
+    }
+  }
+}

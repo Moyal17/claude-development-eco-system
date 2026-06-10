@@ -1,0 +1,43 @@
+{
+  "name": "plan_approve",
+  "description": "Approve an implementor's submitted plan. Only callable by the architect. Unblocks the implementor to begin writing code.",
+  "input_schema": {
+    "type": "object",
+    "required": ["task_id", "plan_version", "summary"],
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "pattern": "^TASK-[0-9]+$"
+      },
+      "plan_version": {
+        "type": "string",
+        "description": "The plan_version timestamp being approved — must match the submitted plan exactly"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Brief architect statement confirming why the plan is approved"
+      },
+      "warnings": {
+        "type": "array",
+        "description": "Non-blocking concerns the implementor should be aware of during implementation",
+        "items": {
+          "type": "object",
+          "required": ["area", "detail"],
+          "properties": {
+            "area": { "type": "string" },
+            "detail": { "type": "string" }
+          }
+        },
+        "default": []
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "approved": { "type": "boolean", "const": true },
+      "task_id": { "type": "string" },
+      "new_task_status": { "type": "string", "const": "IMPLEMENTATION_IN_PROGRESS" }
+    }
+  }
+}

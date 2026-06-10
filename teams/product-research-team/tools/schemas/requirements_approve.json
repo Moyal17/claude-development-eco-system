@@ -1,0 +1,50 @@
+{
+  "name": "requirements_approve",
+  "description": "CPO approves the Requirements Document. This is the final gate. Approval triggers WORKFLOW_COMPLETE and the handoff to the CTO team. Only the CPO may call this tool.",
+  "input_schema": {
+    "type": "object",
+    "required": ["brief_id", "revision", "summary"],
+    "properties": {
+      "brief_id": {
+        "type": "string",
+        "pattern": "^BRIEF-[0-9]+$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "summary": {
+        "type": "string",
+        "description": "One sentence confirming the requirements are complete and differentiated",
+        "minLength": 20
+      },
+      "top_differentiators": {
+        "type": "array",
+        "description": "The top 3 differentiators the CPO is confirming are specced",
+        "minItems": 1,
+        "maxItems": 3,
+        "items": { "type": "string" }
+      },
+      "warnings": {
+        "type": "array",
+        "description": "Non-blocking notes for the CTO team to be aware of",
+        "items": {
+          "type": "object",
+          "properties": {
+            "section": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "approved": { "type": "boolean", "const": true },
+      "gate": { "type": "string", "const": "requirements_approval" },
+      "workflow_status": { "type": "string", "const": "WORKFLOW_COMPLETE" },
+      "decided_at": { "type": "string", "format": "date-time" }
+    }
+  }
+}

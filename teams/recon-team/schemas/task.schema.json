@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "recon-task.schema.json",
+  "title": "Recon Task",
+  "description": "A unit of research work created by the Research Director and executed through the recon team workflow",
+  "type": "object",
+  "required": ["id", "title", "description", "deliverables", "assigned_specialist", "priority", "created_by", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique task identifier",
+      "pattern": "^RECON-[0-9]+$",
+      "examples": ["RECON-001", "RECON-005"]
+    },
+    "title": {
+      "type": "string",
+      "description": "Short, imperative title describing the research task",
+      "minLength": 5,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "description": "Full description of the research to be done, including target, scope, and context from pre-recon questions",
+      "minLength": 20
+    },
+    "deliverables": {
+      "type": "array",
+      "description": "Specific, verifiable outputs this task must produce",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 10
+      }
+    },
+    "assigned_specialist": {
+      "type": "string",
+      "description": "ID of the specialist agent assigned to this task",
+      "enum": ["web_researcher", "market_researcher", "design_analyst", "technical_architect", "product_analyst", "devils_advocate", "realist_angel"]
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"]
+    },
+    "created_by": {
+      "type": "string",
+      "enum": ["research_director", "user"]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current workflow stage of the task",
+      "enum": [
+        "TASK_CREATED",
+        "RESEARCH_IN_PROGRESS",
+        "REPORT_SUBMITTED",
+        "UNDER_CHALLENGE",
+        "REVISION_IN_PROGRESS",
+        "CHALLENGE_DEFENDED",
+        "SYNTHESIS_IN_PROGRESS",
+        "ADVISORY_IN_PROGRESS",
+        "TASK_DONE"
+      ]
+    },
+    "depends_on_task_ids": {
+      "type": "array",
+      "description": "Task IDs that must be DONE before this task may begin",
+      "items": {
+        "type": "string",
+        "pattern": "^RECON-[0-9]+$"
+      },
+      "default": []
+    },
+    "target": {
+      "type": "string",
+      "description": "The URL, product name, or idea being researched"
+    },
+    "user_intent": {
+      "type": "string",
+      "description": "What the user wants to do: build better, build adjacent, explore feasibility, or understand"
+    },
+    "challenge_audit": {
+      "type": "array",
+      "description": "Record of cross-challenge interactions for this task",
+      "items": {
+        "type": "object",
+        "properties": {
+          "challenger": { "type": "string" },
+          "challenge": { "type": "string" },
+          "response": { "type": "string" },
+          "outcome": { "type": "string", "enum": ["defended", "revised", "escalated"] },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
