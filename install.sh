@@ -153,22 +153,31 @@ echo "Agent teams -> $TEAMS_LINK"
 link_one "$ECO_ROOT/teams" "$TEAMS_LINK"
 echo
 
-# Legacy code-review path — the binding code_reviewer.md role prompt reads
-# ~/sourceControl/claude-skills/code-review/SKILL.md. Keep it a symlink to the
-# eco-system copy so the two can't drift. Only replace a real file if it is
-# byte-identical; otherwise warn and leave it for manual reconciliation.
-LEGACY_CODE_REVIEW="$HOME/sourceControl/claude-skills/code-review/SKILL.md"
+# Legacy claude-skills/ paths — kept as symlinks so any external references still resolve.
+# code-review/SKILL.md: binding code_reviewer.md prompt hardcodes this path.
+# heygen/, lighthouse/, remotion/: ~/sourceControl/CLAUDE.md @-includes these; symlinks
+# keep those paths alive while the source of truth lives in skills/ here.
+CLAUDE_SKILLS_DIR="$HOME/sourceControl/claude-skills"
+ensure_dir "$CLAUDE_SKILLS_DIR"
+echo "Legacy claude-skills/ symlinks -> $CLAUDE_SKILLS_DIR"
+
+# code-review SKILL.md (file symlink — only the file, not the whole dir)
+LEGACY_CODE_REVIEW="$CLAUDE_SKILLS_DIR/code-review/SKILL.md"
 ECO_CODE_REVIEW="$ECO_ROOT/skills/code-review/SKILL.md"
 ensure_dir "$(dirname "$LEGACY_CODE_REVIEW")"
-echo "Legacy code-review path -> $LEGACY_CODE_REVIEW"
 if [ ! -L "$LEGACY_CODE_REVIEW" ] && [ -f "$LEGACY_CODE_REVIEW" ]; then
   if cmp -s "$LEGACY_CODE_REVIEW" "$ECO_CODE_REVIEW"; then
     run rm "$LEGACY_CODE_REVIEW"
   else
-    echo "  warn  $LEGACY_CODE_REVIEW differs from eco-system copy — not replacing. Reconcile manually."
+    echo "  warn  $(basename $LEGACY_CODE_REVIEW) differs from eco-system copy — not replacing. Reconcile manually."
   fi
 fi
 link_one "$ECO_CODE_REVIEW" "$LEGACY_CODE_REVIEW"
+
+# heygen, lighthouse, remotion (dir symlinks)
+for skill in heygen lighthouse remotion; do
+  link_one "$ECO_ROOT/skills/$skill" "$CLAUDE_SKILLS_DIR/$skill"
+done
 echo
 
 # Personal CLAUDE.md — install only if missing. Never overwrite an existing one.

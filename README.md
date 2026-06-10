@@ -19,11 +19,14 @@ cd ~/sourceControl/claude-development-eco-system && ./install.sh
 | `/run-dev-team` | Same gate workflow, but spawns each role as a real independent subagent (native Claude Code teams). Architect and reviewers run in parallel with isolated contexts. Use for large tasks or when the main context is already heavy. |
 | `/code-review` | Standalone 9-dimension production-quality code review: auth/authz, injection, concurrency, data integrity, error handling, API design, cryptography, type safety, test coverage. Pass `--fix` to auto-apply findings or `--comment` to post as inline PR comments. |
 | `/ui-ux-pro-max` | UI/UX design intelligence — 67 styles, 96 palettes, 57 font pairings, 25 chart types, 13 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui). Covers design, build, review, and improve actions for any UI artifact. |
+| `/remotion` | Remotion video composition reference — rules for animations, timing, sequencing, text effects, transitions, audio, captions, 3D, fonts, charts, Lottie, maps, and more. Load the relevant rule file on demand for the task at hand. |
+| `/lighthouse` | Lighthouse CI setup and performance diagnosis for Vite/React SPAs. Covers render-blocking fonts, LCP/hero image fixes, JS bundle splitting, RTL screenshot testing. |
 | `/learn` | Multi-session codebase onboarding. Builds a personal architecture map, extracts conventions from recent merged PRs, identifies hot-spot files, drafts a project-specific CLAUDE.md. Resumable across sessions. |
 | `/done` | Close-out a finished task — stamps `done_at` + `actual_hours`, appends a calibration row to the per-repo velocity log, archives the plan file. |
 | `/feature` | End-to-end feature loop (phases Frame → Map → Plan → Branch → Build → Ship → Review). Drives the 5-role gate workflow internally. Supports `--jira`, `--no-pr`, `--resume`. |
 | `/quick-fix` | Compressed hotfix path — CTO → joint Architect+Wiring scan → Implementor → Code Reviewer. Single-round gates, no Jira, no PR auto-open. Bails to `/dev-roles` if the scan shows bigger scope. |
 | `/task-timing` | Auto-fires alongside any skill that drives `TaskCreate`/`TaskUpdate`. Stamps start/end on every gate transition, emits a markdown timing table (task → elapsed → estimate vs actual) at workflow end. |
+| HeyGen skills | Multi-skill library for HeyGen AI video — prompt-based creation, avatar/scene control (v2 API), visual-style design systems, TTS audio, video translation. Loaded via `@`-include in `~/sourceControl/CLAUDE.md`; individual sub-skills at `skills/heygen/skills/*/SKILL.md`. |
 
 ### Auto-activating knowledge skills (`skills/knowledge/`)
 
@@ -115,7 +118,7 @@ cd ~/sourceControl/claude-development-eco-system && ./install.sh
 # - Symlinks each skill dir  -> ~/.claude/skills/
 # - Symlinks each agent .md  -> ~/.claude/agents/
 # - Symlinks ~/sourceControl/claude-teams -> teams/  (keeps hardcoded role-prompt paths alive)
-# - Symlinks ~/sourceControl/claude-skills/code-review/SKILL.md -> skills/code-review/SKILL.md
+# - Symlinks ~/sourceControl/claude-skills/{code-review/SKILL.md,heygen,lighthouse,remotion} -> skills/ (legacy paths kept alive)
 # - Never overwrites your existing ~/.claude/CLAUDE.md
 ```
 

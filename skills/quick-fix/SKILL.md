@@ -21,7 +21,7 @@ Read whichever role you're currently playing — obey it honestly. No rubber-sta
 - `~/sourceControl/claude-teams/agent-team/prompts/implementor.md`
 - `~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md`
 
-The 9-dimension code-review checklist lives at `~/sourceControl/claude-skills/code-review/SKILL.md`. Load it before the reviewer step.
+The 9-dimension code-review checklist lives at `~/sourceControl/claude-development-eco-system/skills/code-review/SKILL.md`. Load it before the reviewer step.
 
 ---
 
@@ -107,7 +107,7 @@ Summarize files changed when done.
 
 ## Step 4 — [CODE REVIEWER]: Review the diff
 
-Announce `[CODE REVIEWER]`. Load `~/sourceControl/claude-skills/code-review/SKILL.md` and apply the 9 dimensions to the diff. Produce the standard finding tables (CRITICAL / HIGH / MEDIUM / LOW) plus the gate verdict.
+Announce `[CODE REVIEWER]`. Load `~/sourceControl/claude-development-eco-system/skills/code-review/SKILL.md` and apply the 9 dimensions to the diff. Produce the standard finding tables (CRITICAL / HIGH / MEDIUM / LOW) plus the gate verdict.
 
 Severity → action mapping for quick-fix mode:
 - **CRITICAL or HIGH** → REJECTED. Implementor addresses. **One retry max** (not 3) — second rejection surfaces to user.
