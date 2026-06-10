@@ -1,6 +1,6 @@
 ---
 name: feature
-description: End-to-end feature command. One invocation drives all 7 internal phases (Frame → Map → Plan + Architect gate → Branch + optional Jira sync → 5-role build gate → Ship/PR → Address review). Resumable via plan-file frontmatter. Use when (1) building a new feature on an existing codebase, (2) any change that justifies a written brief and architect-approved plan, (3) work that touches multiple files or has non-trivial blast radius, (4) the user says "let's add", "let's build", "implement", "ship", "deliver". Falls back to suggesting /quick-fix when the work is too small (< 30 lines, < 3 files, single obvious cause), or /dev-roles when you want to skip the intake/research/plan ceremony. Reuses the dev team's 5 unchanged role prompts at ~/sourceControl/claude-teams/agent-team/prompts/. Optional Jira sync (--jira KEY) and PR auto-open (--no-pr to skip).
+description: End-to-end feature command. One invocation drives all 7 internal phases (Frame → Map → Plan + Architect gate → Branch + optional Jira sync → 5-role build gate → Ship/PR → Address review). Resumable via plan-file frontmatter. Use when (1) building a new feature on an existing codebase, (2) any change that justifies a written brief and architect-approved plan, (3) work that touches multiple files or has non-trivial blast radius, (4) the user says "let's add", "let's build", "implement", "ship", "deliver". Falls back to suggesting /quick-fix when the work is too small (< 30 lines, < 3 files, single obvious cause), or /dev-roles when you want to skip the intake/research/plan ceremony. Reuses the dev team's 5 unchanged role prompts at ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/. Optional Jira sync (--jira KEY) and PR auto-open (--no-pr to skip).
 argument-hint: <description> [--jira KEY] [--no-pr] [--mode=full|fast] [--resume <slug>]
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent
 ---
@@ -29,11 +29,11 @@ Read those files when you are about to enter a phase that they affect.
 ## Canonical role prompts (read each, do not modify)
 
 ```
-~/sourceControl/claude-teams/agent-team/prompts/cto.md
-~/sourceControl/claude-teams/agent-team/prompts/architect.md
-~/sourceControl/claude-teams/agent-team/prompts/implementor.md
-~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md
-~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md
 ```
 
 Phase E plays each role in sequence. **Read the role prompt before switching voice.** Per user constraint: these are NEVER edited by this skill.
@@ -126,7 +126,7 @@ If the repo has `docs/onboarding/` artifacts (from a prior `/learn` run), refere
 
 ## Phase C — Plan (Architect Gate)
 
-**Read `~/sourceControl/claude-teams/agent-team/prompts/architect.md`.** Obey it.
+**Read `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md`.** Obey it.
 
 **Draft the Plan.** Append to `docs/plans/<slug>.md`:
 
@@ -208,11 +208,11 @@ Set `phase: E`. **No stop signal here** — Phase D is fast and Phase E follows 
 **Read all 5 role prompts before starting** — they govern this phase end-to-end.
 
 ```
-~/sourceControl/claude-teams/agent-team/prompts/cto.md
-~/sourceControl/claude-teams/agent-team/prompts/architect.md
-~/sourceControl/claude-teams/agent-team/prompts/implementor.md
-~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md
-~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md
+~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md
 ```
 
 Stamp `status: building`. Announce each role switch on its own line.
@@ -331,7 +331,7 @@ State lives in plan-file frontmatter. On every invocation:
 
 ## What this skill explicitly does NOT do
 
-- ❌ Modify any role prompt at `~/sourceControl/claude-teams/agent-team/prompts/`
+- ❌ Modify any role prompt at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/`
 - ❌ Auto-merge PRs
 - ❌ Auto-deploy
 - ❌ Auto-invoke `/done` (human checkpoint)

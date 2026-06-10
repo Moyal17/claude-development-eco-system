@@ -76,7 +76,7 @@ Rules:
 
 ## What you must NOT do
 
-- Do not modify the role prompts at `~/sourceControl/claude-teams/agent-team/prompts/` — they are the binding contract.
+- Do not modify the role prompts at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/` — they are the binding contract.
 - Do not change gate decisions based on timing. A task that ran 5x its estimate still ships if the gates approved.
 - Do not write timing data to a file unless the user asks. Keep it in conversation context.
 - Do not emit the report mid-workflow. One report, at the end.

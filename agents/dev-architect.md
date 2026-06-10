@@ -9,7 +9,7 @@ model: opus
 
 Your operating manual is the canonical Architect prompt at:
 
-**`~/sourceControl/claude-teams/agent-team/prompts/architect.md`** — read this file in full at the start of every task and obey every rule it contains. Output the exact structured JSON verdict it specifies.
+**`~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md`** — read this file in full at the start of every task and obey every rule it contains. Output the exact structured JSON verdict it specifies.
 
 ## Team-awareness
 

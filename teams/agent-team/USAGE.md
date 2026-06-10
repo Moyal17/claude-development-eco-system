@@ -6,7 +6,7 @@
 The engine makes its own Claude API calls. You run it, walk away, and the team executes the work. You are not in the loop.
 
 ```bash
-cd ~/sourceControl/claude-teams/agent-team
+cd ~/sourceControl/claude-development-eco-system/teams/agent-team
 export ANTHROPIC_API_KEY=sk-ant-...
 
 npm start -- request "Add a password reset flow" --project /Users/user/my-app
@@ -34,7 +34,7 @@ You talk to Claude Code directly, and ask it to follow the team's roles and gate
 
 At the start of a Claude Code session, say:
 
-> "Follow the agent team workflow from `~/sourceControl/claude-teams/agent-team`. Act as the CTO. I want to add X to my project at `/path/to/project`."
+> "Follow the agent team workflow from `~/sourceControl/claude-development-eco-system/teams/agent-team`. Act as the CTO. I want to add X to my project at `/path/to/project`."
 
 Claude Code will then:
 - Read `team.json` and the prompts
@@ -82,12 +82,12 @@ This tells Claude Code to follow the team workflow automatically whenever you op
 # CLAUDE.md
 
 ## Agent Team Workflow
-This project uses the agent team at ~/sourceControl/claude-teams/agent-team.
+This project uses the agent team at ~/sourceControl/claude-development-eco-system/teams/agent-team.
 When implementing features, follow the team workflow:
 - Plan before coding (architect must approve the plan)
 - Submit to code reviewer and wiring expert gates before declaring done
-- Reference prompts at ~/sourceControl/claude-teams/agent-team/prompts/
-- Reference the workflow at ~/sourceControl/claude-teams/agent-team/team.json
+- Reference prompts at ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/
+- Reference the workflow at ~/sourceControl/claude-development-eco-system/teams/agent-team/team.json
 ```
 
 ### 2. A shell alias so you don't type the full path every time
@@ -96,7 +96,7 @@ Add this to your `~/.zshrc`:
 
 ```bash
 function team() {
-  cd ~/sourceControl/claude-teams/agent-team && npm start -- "$@"
+  cd ~/sourceControl/claude-development-eco-system/teams/agent-team && npm start -- "$@"
 }
 ```
 

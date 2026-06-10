@@ -7,11 +7,11 @@ Use this prompt to create a new multi-agent team for any domain. Copy everything
 ## The Prompt
 
 ```
-I want you to design and build a complete multi-agent team following the exact structure and quality standard of ~/sourceControl/claude-teams/agent-team/ and ~/sourceControl/claude-teams/recon-team/.
+I want you to design and build a complete multi-agent team following the exact structure and quality standard of ~/sourceControl/claude-development-eco-system/teams/agent-team/ and ~/sourceControl/claude-development-eco-system/teams/recon-team/.
 
 Read both of these directories first to understand the pattern:
-- ~/sourceControl/claude-teams/agent-team/ — an engineering team with CTO, Architect, Implementors, Code Reviewer, Wiring Expert
-- ~/sourceControl/claude-teams/recon-team/ — a product recon team with Research Director, 4 Specialists, Product Analyst, Devil's Advocate, Realist Angel
+- ~/sourceControl/claude-development-eco-system/teams/agent-team/ — an engineering team with CTO, Architect, Implementors, Code Reviewer, Wiring Expert
+- ~/sourceControl/claude-development-eco-system/teams/recon-team/ — a product recon team with Research Director, 4 Specialists, Product Analyst, Devil's Advocate, Realist Angel
 
 Study how they work: the team.json structure, the prompt depth and specificity, the schemas, the CLAUDE.md workflow, the gate enforcement, the cross-challenge/review matrix, and the decomposition template.
 
@@ -148,7 +148,7 @@ Here's how I would have filled this in to generate the recon-team:
 ```
 **Team Name**: Elite Recon Team
 **Team Purpose**: A product reconnaissance team that analyzes websites, SaaS products, marketplaces, and ideas to extract their essence, design system, technical architecture, market position, and competitive vulnerabilities — then delivers a go/no-go recommendation calibrated for a solo developer.
-**Output Directory**: ~/sourceControl/claude-teams/recon-team/
+**Output Directory**: ~/sourceControl/claude-development-eco-system/teams/recon-team/
 
 ## Roles I Want
 

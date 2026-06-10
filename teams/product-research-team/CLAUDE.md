@@ -1,6 +1,6 @@
 # Product Research Team Workflow
 
-All product research under this directory uses the agent team defined at `~/sourceControl/claude-teams/product-research-team`.
+All product research under this directory uses the agent team defined at `~/sourceControl/claude-development-eco-system/teams/product-research-team`.
 When researching a new product or feature — follow the full team gate workflow below.
 Do not begin research without an approved research plan. Do not write requirements without CPO-approved research findings.
 

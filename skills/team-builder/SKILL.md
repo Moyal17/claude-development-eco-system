@@ -1,6 +1,6 @@
 ---
 name: team-builder
-description: Design and generate a complete agent team following the structure of ~/sourceControl/claude-teams/agent-team. Use when the user wants to build a structured AI agent team for any domain — software development, design, data, QA, security, content, research, or any field that benefits from structured roles with quality gates. Guides through role design, gate workflow, prompt generation, tool schemas, and full file creation. The output is a production-ready team folder matching the quality of the reference team.
+description: Design and generate a complete agent team following the structure of ~/sourceControl/claude-development-eco-system/teams/agent-team. Use when the user wants to build a structured AI agent team for any domain — software development, design, data, QA, security, content, research, or any field that benefits from structured roles with quality gates. Guides through role design, gate workflow, prompt generation, tool schemas, and full file creation. The output is a production-ready team folder matching the quality of the reference team.
 argument-hint: [team name or purpose, e.g. "data science team" or "content review team"]
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
@@ -9,7 +9,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 
 You are a **team architect**. Your job is to interview the user, design a structured agent team, and generate every file needed to make it work — both as a standalone engine and inside Claude Code.
 
-Your quality bar is the reference team at `~/sourceControl/claude-teams/agent-team`. Every file you produce must match or exceed its standard of clarity, completeness, and enforced structure.
+Your quality bar is the reference team at `~/sourceControl/claude-development-eco-system/teams/agent-team`. Every file you produce must match or exceed its standard of clarity, completeness, and enforced structure.
 
 ---
 
@@ -17,14 +17,14 @@ Your quality bar is the reference team at `~/sourceControl/claude-teams/agent-te
 
 Before asking the user anything, read the reference team to internalize the pattern:
 
-1. `~/sourceControl/claude-teams/agent-team/team.json`
-2. `~/sourceControl/claude-teams/agent-team/prompts/cto.md`
-3. `~/sourceControl/claude-teams/agent-team/prompts/architect.md`
-4. `~/sourceControl/claude-teams/agent-team/prompts/implementor.md`
-5. `~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md`
-6. `~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md`
-7. `~/sourceControl/claude-teams/agent-team/tasks/decomposition.md`
-8. `~/sourceControl/claude-teams/agent-team/CLAUDE.md`
+1. `~/sourceControl/claude-development-eco-system/teams/agent-team/team.json`
+2. `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md`
+3. `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md`
+4. `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md`
+5. `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md`
+6. `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md`
+7. `~/sourceControl/claude-development-eco-system/teams/agent-team/tasks/decomposition.md`
+8. `~/sourceControl/claude-development-eco-system/teams/agent-team/CLAUDE.md`
 
 Also read the skill's own reference files:
 
@@ -294,7 +294,7 @@ All projects under this directory use the agent team defined at `<team-path>`.
 
 ### src/ (if engine requested)
 
-Adapt the reference engine from `~/sourceControl/claude-teams/agent-team/src/`:
+Adapt the reference engine from `~/sourceControl/claude-development-eco-system/teams/agent-team/src/`:
 - Copy the structure: `types.ts`, `state.ts`, `tools.ts`, `runner.ts`, `orchestrator.ts`, `index.ts`
 - Update `tools.ts`: replace tool definitions and handlers to match the new team's tools and artifact names
 - Update `orchestrator.ts`: replace the stage machine with the new workflow stages, rename agent invocation methods

@@ -9,7 +9,7 @@ model: opus
 
 Your operating manual is the canonical CTO prompt at:
 
-**`~/sourceControl/claude-teams/agent-team/prompts/cto.md`** — read this file in full at the start of every task and obey every rule it contains. The decomposition process at `~/sourceControl/claude-teams/agent-team/tasks/decomposition.md` is also binding.
+**`~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md`** — read this file in full at the start of every task and obey every rule it contains. The decomposition process at `~/sourceControl/claude-development-eco-system/teams/agent-team/tasks/decomposition.md` is also binding.
 
 ## Team-awareness (native Claude Code agent teams)
 

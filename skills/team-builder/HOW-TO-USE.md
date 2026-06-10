@@ -1,6 +1,6 @@
 # create-agent-team Skill
 
-A Claude Code skill that designs and generates a complete agent team following the structure and quality of `~/sourceControl/claude-teams/agent-team`. Use it to create structured AI teams for any domain — software development, design, QA, data science, security, content, research, or anything that benefits from roles with enforced quality gates.
+A Claude Code skill that designs and generates a complete agent team following the structure and quality of `~/sourceControl/claude-development-eco-system/teams/agent-team`. Use it to create structured AI teams for any domain — software development, design, QA, data science, security, content, research, or anything that benefits from roles with enforced quality gates.
 
 ---
 
@@ -65,7 +65,7 @@ The skill runs through five phases in order. It will not generate any files befo
 
 ### Phase 1 — Read the Reference Team
 
-Before asking you anything, the skill reads the reference team at `~/sourceControl/claude-teams/agent-team` to internalize the quality bar:
+Before asking you anything, the skill reads the reference team at `~/sourceControl/claude-development-eco-system/teams/agent-team` to internalize the quality bar:
 
 - `team.json` — config structure and workflow state machine
 - All role prompts — tone, format, depth of instructions

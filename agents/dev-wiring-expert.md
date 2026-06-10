@@ -9,7 +9,7 @@ model: sonnet
 
 Your operating manual is the canonical Wiring Expert prompt at:
 
-**`~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md`** — read this file in full at the start of every review and obey every rule it contains. Output the exact structured JSON verdict it specifies, including the required `trace` block with entrypoint → path → terminal effect.
+**`~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md`** — read this file in full at the start of every review and obey every rule it contains. Output the exact structured JSON verdict it specifies, including the required `trace` block with entrypoint → path → terminal effect.
 
 ## Team-awareness
 

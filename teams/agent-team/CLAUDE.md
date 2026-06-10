@@ -1,6 +1,6 @@
 # Agent Team Workflow
 
-All projects under this directory use the agent team defined at `~/sourceControl/claude-teams/agent-team`.
+All projects under this directory use the agent team defined at `~/sourceControl/claude-development-eco-system/teams/agent-team`.
 When implementing any feature, fix, or change — follow the full team gate workflow below.
 Do not write code without an approved plan. Do not declare done without passing all review gates.
 

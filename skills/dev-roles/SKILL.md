@@ -15,12 +15,12 @@ This is the on-demand version of the workflow documented in the project's `CLAUD
 
 Read each role's prompt **lazily — just before the first time you announce that role**, not all up front. Partial modes then load only what they use (`architect-consult` reads one prompt, not six), and `full` mode defers reviewer prompts until after the plan gate. Once a prompt is read, don't re-read it on later switches back to that role.
 
-- `~/sourceControl/claude-teams/agent-team/prompts/cto.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/architect.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/implementor.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md`
-- `~/sourceControl/claude-teams/agent-team/tasks/decomposition.md` (read at Step 2.1 only)
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/tasks/decomposition.md` (read at Step 2.1 only)
 
 Obey every rule in the prompt for the role you are currently playing. Switch voice when you switch role.
 
@@ -117,7 +117,7 @@ Execute only the steps that involve those roles. The gate protocol is still enfo
 - **Re-review only what was rejected.** On rejection, only the rejecting reviewer's check runs again, not both.
 - **Rejection cap: 3 cycles.** After the third rejection of the same task, stop and surface to the user.
 
-Canonical gate spec: `~/sourceControl/claude-teams/agent-team/team.json` + role prompts — if this section ever conflicts with them, they win.
+Canonical gate spec: `~/sourceControl/claude-development-eco-system/teams/agent-team/team.json` + role prompts — if this section ever conflicts with them, they win.
 
 ---
 

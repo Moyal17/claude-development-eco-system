@@ -10,13 +10,13 @@ allowed-tools: Read, Grep, Glob, Bash, TaskCreate, TaskUpdate, TaskList, TaskGet
 You are the **team lead** for the Elite Engineering Team. You spin up a real Claude Code agent team (via `TeamCreate`), spawn the required role teammates as independent subagents, route work through the gate protocol, and tear the team down when the task is done.
 
 **Reference prompts** (canonical, do not duplicate):
-- `~/sourceControl/claude-teams/agent-team/prompts/cto.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/architect.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/implementor.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md`
-- `~/sourceControl/claude-teams/agent-team/team.json`
-- `~/sourceControl/claude-teams/agent-team/CLAUDE.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/team.json`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/CLAUDE.md`
 
 Each subagent type (`dev-cto`, `dev-architect`, `dev-implementor`, `dev-code-reviewer`, `dev-wiring-expert`) is defined in `~/.claude/agents/` and already delegates to these prompts. You do not need to inline their behavior — just spawn them.
 
@@ -38,7 +38,7 @@ Mode → roles to spawn:
 | `architect-consult` | architect | One architectural question, no task decomposition |
 | custom subset | as listed | Power user — exactly the roles named |
 
-**You** (the team lead) hold the CTO responsibility for this run — you decompose, assign, enforce gates, and close. You do NOT also spawn a `dev-cto` teammate. You are the CTO for the duration of this skill invocation. Obey the CTO manual at `~/sourceControl/claude-teams/agent-team/prompts/cto.md`.
+**You** (the team lead) hold the CTO responsibility for this run — you decompose, assign, enforce gates, and close. You do NOT also spawn a `dev-cto` teammate. You are the CTO for the duration of this skill invocation. Obey the CTO manual at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md`.
 
 If the request is ambiguous (no clear task, or conflicting mode), ask the user once before spawning the team. Do not guess.
 
@@ -85,7 +85,7 @@ You are the <role> for team `<team-name>`. Task: <one-line task description>. Co
 
 ## Step 4 — Decompose and dispatch
 
-As team lead, follow the CTO manual + `~/sourceControl/claude-teams/agent-team/tasks/decomposition.md`:
+As team lead, follow the CTO manual + `~/sourceControl/claude-development-eco-system/teams/agent-team/tasks/decomposition.md`:
 
 1. Produce a task list with `TaskCreate` — one task per discrete unit of work, each with id, title, description, acceptance criteria, scope boundaries.
 2. Assign the first batch with `TaskUpdate({taskId, owner: "implementor"})` (or the relevant starting owner per mode).
@@ -145,7 +145,7 @@ When the in-scope gates all pass (or the user aborts), or the rejection cap is h
 - **You never address teammates by `agentId`.** Always use their `name` from the team config.
 - **You always clean up.** Even on error paths, call `TeamDelete` so stale teams don't pile up in `~/.claude/teams/`.
 
-Canonical gate spec: `~/sourceControl/claude-teams/agent-team/team.json` + role prompts — if this section ever conflicts with them, they win.
+Canonical gate spec: `~/sourceControl/claude-development-eco-system/teams/agent-team/team.json` + role prompts — if this section ever conflicts with them, they win.
 
 ---
 

@@ -15,11 +15,11 @@ This skill exists because the full pipeline (`/intake → /research → /plan �
 
 Read whichever role you're currently playing — obey it honestly. No rubber-stamping just because the work is small.
 
-- `~/sourceControl/claude-teams/agent-team/prompts/cto.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/architect.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/implementor.md`
-- `~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/cto.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md`
+- `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md`
 
 The 9-dimension code-review checklist lives at `~/sourceControl/claude-development-eco-system/skills/code-review/SKILL.md`. Load it before the reviewer step.
 

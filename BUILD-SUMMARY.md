@@ -16,7 +16,7 @@
 | Knowledge skills | Ported 4 from addyosmani: `context-engineering`, `incremental-implementation`, `debugging-and-error-recovery`, `source-driven-development`. Auto-activate, no slash command. Live under `skills/knowledge/`. |
 | Personal CLAUDE.md | New `templates/personal-claude-md.template` → installed to `~/.claude/CLAUDE.md` (only if missing). Captures durable working-style preferences. |
 | Installer | `install.sh` symlinks 6 active skills + 4 knowledge skills + agents, copies personal CLAUDE.md only if absent. |
-| Dev team roles | **UNCHANGED.** All 5 prompts at `~/sourceControl/claude-teams/agent-team/prompts/` remain the binding contract. Per user constraint. |
+| Dev team roles | **UNCHANGED.** All 5 prompts at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/` remain the binding contract. Per user constraint. |
 | Methodology docs | Unchanged. The WHY behind each stage is still valid; only the command surface collapsed. |
 
 **Active skills (6 commands + 4 knowledge):**

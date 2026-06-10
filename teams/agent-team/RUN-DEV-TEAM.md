@@ -8,7 +8,7 @@ Each role runs in its **own isolated subagent context**. They share a task list,
 
 - Skill: `~/.claude/skills/run-dev-team/SKILL.md`
 - Subagent definitions: `~/.claude/agents/dev-cto.md`, `dev-architect.md`, `dev-implementor.md`, `dev-code-reviewer.md`, `dev-wiring-expert.md`
-- Canonical prompts (source of truth, unchanged): `~/sourceControl/claude-teams/agent-team/prompts/*.md`
+- Canonical prompts (source of truth, unchanged): `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/*.md`
 
 The subagent files are thin wrappers — they tell each subagent to read its manual from this folder. Edit a prompt here, every future team run picks it up.
 

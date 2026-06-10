@@ -167,6 +167,6 @@ because a workflow added (a) ad hoc; we should not rely on remembering to.
 - **F1–F4** edit `~/sourceControl/claude-skills/code-review/SKILL.md` — the loadable checklist the Code
   Reviewer is told to apply. This file is designed to be extended with incident-informed dimensions; no
   conflict with the "never modify the role prompts" rule.
-- **F5** edits `~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md`, and **F6** touches
+- **F5** edits `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md`, and **F6** touches
   `prompts/code_reviewer.md` / `team.json` / project `CLAUDE.md`. These are the **binding role prompts**,
   which the standing rule marks **"never modify."** They need explicit sign-off before editing.

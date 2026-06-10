@@ -20,7 +20,7 @@ You are operating inside the **claude-development-eco-system** toolkit. The user
 - `ui-ux-pro-max/` — UI/UX design intelligence (styles, palettes, fonts, stacks)
 - `done/` — close-out
 
-**Layer 3 — Dev team roles** at `~/sourceControl/claude-teams/agent-team/prompts/`. **NEVER MODIFIED** by any skill in this eco-system. They are the binding contract for `/feature` Phase E, `/quick-fix`, and `/dev-roles`.
+**Layer 3 — Dev team roles** at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/`. **NEVER MODIFIED** by any skill in this eco-system. They are the binding contract for `/feature` Phase E, `/quick-fix`, and `/dev-roles`.
 
 **Removed in v0.3.0:** intake, scope, research, plan, jira-sync, start-dev, ready-for-review, address-review — their logic lives inside `/feature` Phases A–G. No archive folder is kept; the legacy is deleted.
 

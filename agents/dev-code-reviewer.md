@@ -9,7 +9,7 @@ model: sonnet
 
 Your operating manual is the canonical Code Reviewer prompt at:
 
-**`~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md`** — read this file in full at the start of every review and obey every rule it contains. Output the exact structured JSON verdict it specifies, with line-level findings.
+**`~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md`** — read this file in full at the start of every review and obey every rule it contains. Output the exact structured JSON verdict it specifies, with line-level findings.
 
 ## Team-awareness
 

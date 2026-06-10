@@ -38,7 +38,7 @@ Claude Code will announce each role switch and follow all gates without you havi
 
 ### Install dependencies
 ```bash
-cd ~/sourceControl/claude-teams/agent-team
+cd ~/sourceControl/claude-development-eco-system/teams/agent-team
 npm install
 ```
 
@@ -49,7 +49,7 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 ### Add the shell alias to ~/.zshrc so you can type `team` instead of the full path
 ```bash
-echo 'function team() { cd ~/sourceControl/claude-teams/agent-team && npm start -- "$@"; }' >> ~/.zshrc
+echo 'function team() { cd ~/sourceControl/claude-development-eco-system/teams/agent-team && npm start -- "$@"; }' >> ~/.zshrc
 source ~/.zshrc
 ```
 
@@ -159,31 +159,31 @@ When you want to have a conversation with Claude Code and have it follow the tea
 
 ### Tell Claude Code to act as the full team
 ```
-Follow the agent team workflow from ~/sourceControl/claude-teams/agent-team.
+Follow the agent team workflow from ~/sourceControl/claude-development-eco-system/teams/agent-team.
 Act as the CTO. The project is at ~/work/my-app.
 I want to add OAuth login with Google.
 ```
 
 ### Tell Claude Code to act as a specific role only
 ```
-Act as the Architect from ~/sourceControl/claude-teams/agent-team/prompts/architect.md
+Act as the Architect from ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md
 and review this implementation plan: [paste plan]
 ```
 
 ```
-Act as the Wiring Expert from ~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md
+Act as the Wiring Expert from ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md
 and trace this feature end-to-end in the project at ~/work/my-app
 ```
 
 ```
-Act as the Code Reviewer from ~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md
+Act as the Code Reviewer from ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md
 and review the diff I am about to paste.
 ```
 
 ### Tell Claude Code to review something it just wrote
 ```
 Now switch to the Wiring Expert role and review what you just implemented.
-Use the criteria from ~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md
+Use the criteria from ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md
 ```
 
 ---
@@ -196,12 +196,12 @@ Add a `CLAUDE.md` to any project root and Claude Code will follow the team workf
 cat >> ~/work/my-app/CLAUDE.md << 'EOF'
 
 ## Agent Team Workflow
-This project uses the agent team at ~/sourceControl/claude-teams/agent-team.
+This project uses the agent team at ~/sourceControl/claude-development-eco-system/teams/agent-team.
 When implementing any feature or fix:
-- Read ~/sourceControl/claude-teams/agent-team/prompts/implementor.md and follow Phase 1-2 (explore, plan) before writing any code
-- After planning, check it against ~/sourceControl/claude-teams/agent-team/prompts/architect.md criteria before proceeding
-- After implementing, self-review using ~/sourceControl/claude-teams/agent-team/prompts/code_reviewer.md criteria
-- After self-review, trace the feature using ~/sourceControl/claude-teams/agent-team/prompts/wiring_expert.md criteria
+- Read ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md and follow Phase 1-2 (explore, plan) before writing any code
+- After planning, check it against ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md criteria before proceeding
+- After implementing, self-review using ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/code_reviewer.md criteria
+- After self-review, trace the feature using ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/wiring_expert.md criteria
 - Only declare done when all gate criteria pass
 EOF
 ```
@@ -216,8 +216,8 @@ EOF
 | Give the team a task (from inside the project) | `cd <project> && team request "..."` |
 | Check what the team is doing | `team status --project <path>` |
 | Resume an interrupted task | `team run TASK-001 --project <path>` |
-| Use Claude Code as the full team | Tell it: *"Follow ~/sourceControl/claude-teams/agent-team workflow"* |
-| Use Claude Code as one specific role | Tell it: *"Act as the Architect from ~/sourceControl/claude-teams/agent-team/prompts/architect.md"* |
+| Use Claude Code as the full team | Tell it: *"Follow ~/sourceControl/claude-development-eco-system/teams/agent-team workflow"* |
+| Use Claude Code as one specific role | Tell it: *"Act as the Architect from ~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/architect.md"* |
 | Make a project always use the team | Add `CLAUDE.md` with team instructions to project root |
 | Separate state from project folder | Add `--state-dir <path>` to any command |
 

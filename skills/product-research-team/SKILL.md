@@ -9,13 +9,13 @@ allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch
 
 You are running the **Elite Product Research Team** workflow. Your job is to execute every role in sequence, announcing each role switch clearly before acting in that role.
 
-The team lives at `~/sourceControl/claude-teams/product-research-team`. Before starting, read the team prompts:
+The team lives at `~/sourceControl/claude-development-eco-system/teams/product-research-team`. Before starting, read the team prompts:
 
-1. `~/sourceControl/claude-teams/product-research-team/prompts/cpo.md`
-2. `~/sourceControl/claude-teams/product-research-team/prompts/researcher.md`
-3. `~/sourceControl/claude-teams/product-research-team/prompts/product_manager.md`
+1. `~/sourceControl/claude-development-eco-system/teams/product-research-team/prompts/cpo.md`
+2. `~/sourceControl/claude-development-eco-system/teams/product-research-team/prompts/researcher.md`
+3. `~/sourceControl/claude-development-eco-system/teams/product-research-team/prompts/product_manager.md`
 
-Output documents are saved to `~/sourceControl/claude-teams/product-research-team/output/`.
+Output documents are saved to `~/sourceControl/claude-development-eco-system/teams/product-research-team/output/`.
 
 ---
 
@@ -91,7 +91,7 @@ Conduct full research per your approved plan. Your output document must include:
 - Edge cases identified (with severity, current competitor handling, recommendation)
 - Open questions
 
-Save to: `~/sourceControl/claude-teams/product-research-team/output/research-researcher1-[product-name]-[date].md`
+Save to: `~/sourceControl/claude-development-eco-system/teams/product-research-team/output/research-researcher1-[product-name]-[date].md`
 
 Submit findings JSON per the Researcher prompt's Phase 4 format.
 
@@ -113,7 +113,7 @@ Conduct full research per your approved plan. Your output document must include:
 - Key insights (numbered, actionable)
 - Open questions
 
-Save to: `~/sourceControl/claude-teams/product-research-team/output/research-researcher2-[product-name]-[date].md`
+Save to: `~/sourceControl/claude-development-eco-system/teams/product-research-team/output/research-researcher2-[product-name]-[date].md`
 
 Submit findings JSON per the Researcher prompt's Phase 4 format.
 
@@ -164,7 +164,7 @@ Jointly produce the unified Requirements Document. It must include all sections 
 13. Appendix A: PM Cross-Consultation Log
 14. Appendix B: Research Traceability Matrix
 
-Save to: `~/sourceControl/claude-teams/product-research-team/output/requirements-[product-name]-[date].md`
+Save to: `~/sourceControl/claude-development-eco-system/teams/product-research-team/output/requirements-[product-name]-[date].md`
 
 Submit requirements JSON per the PM prompt's Phase 4 format.
 

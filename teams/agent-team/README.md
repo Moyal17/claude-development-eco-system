@@ -67,7 +67,7 @@ The engine is a TypeScript application that reads `team.json`, drives Claude API
 ### Setup
 
 ```bash
-cd ~/sourceControl/claude-teams/agent-team
+cd ~/sourceControl/claude-development-eco-system/teams/agent-team
 npm install
 export ANTHROPIC_API_KEY=sk-ant-...
 ```
@@ -118,7 +118,7 @@ Task state is persisted in `state/tasks/TASK-NNN.json` — survives restarts.
   The team runs itself via the Anthropic API — no Claude Code involvement after
   launch.
 ```bash
-cd ~/sourceControl/claude-teams/agent-team
+cd ~/sourceControl/claude-development-eco-system/teams/agent-team
 export ANTHROPIC_API_KEY=sk-ant-...
 npm install  # first time only
 

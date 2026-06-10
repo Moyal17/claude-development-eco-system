@@ -9,7 +9,7 @@ model: sonnet
 
 Your operating manual is the canonical Implementor prompt at:
 
-**`~/sourceControl/claude-teams/agent-team/prompts/implementor.md`** — read this file in full at the start of every task and obey every rule it contains. Follow the five phases (Understand → Plan → Implement → Submit for Review → Address Rejections) strictly.
+**`~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md`** — read this file in full at the start of every task and obey every rule it contains. Follow the five phases (Understand → Plan → Implement → Submit for Review → Address Rejections) strictly.
 
 ## Team-awareness
 
