@@ -124,6 +124,20 @@ JFrog Boost surfaces security vulnerabilities, license risks, and version intell
 
 ---
 
+### NotebookLM MCP — drive NotebookLM from Claude
+**Repo:** [https://github.com/jacob-bd/notebooklm-mcp-cli](https://github.com/jacob-bd/notebooklm-mcp-cli)
+
+An MCP server (+ `nlm` CLI) that exposes Google NotebookLM (notebooklm.google.com) to Claude Code. It powers the `/nlm-*` presentation skills above — notebook/source/studio management, audio/video/infographic/slide generation, research import, and sharing — via `mcp__notebooklm__*` tools.
+
+**What it provides:**
+- MCP server binary `notebooklm-mcp` (registered as the `notebooklm` server) and the `nlm` CLI
+- Tools: `notebook_create`, `source_add`, `studio_create`, `download_artifact`, `research_start`, `note_*`, `notebook_share_*`, and more
+- Browser-cookie auth against your real Google account — no API key
+
+**Connect guide:** see [`skills/notebooklm/CONNECT.md`](skills/notebooklm/CONNECT.md) for the exact install + auth steps used in this environment.
+
+---
+
 ## Bootstrap
 
 ```bash
