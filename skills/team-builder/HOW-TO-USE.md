@@ -1,4 +1,4 @@
-# create-agent-team Skill
+# team-builder Skill
 
 A Claude Code skill that designs and generates a complete agent team following the structure and quality of `~/sourceControl/claude-development-eco-system/teams/agent-team`. Use it to create structured AI teams for any domain — software development, design, QA, data science, security, content, research, or anything that benefits from roles with enforced quality gates.
 
@@ -9,17 +9,17 @@ A Claude Code skill that designs and generates a complete agent team following t
 Type the slash command in any Claude Code session:
 
 ```
-/create-agent-team
+/team-builder
 ```
 
 With a hint to skip the first question:
 
 ```
-/create-agent-team data science team
-/create-agent-team security audit team
-/create-agent-team UX and design team
-/create-agent-team content review team
-/create-agent-team QA and testing team
+/team-builder data science team
+/team-builder security audit team
+/team-builder UX and design team
+/team-builder content review team
+/team-builder QA and testing team
 ```
 
 Claude Code auto-invokes this skill when you ask it to create an agent team in natural language — you do not have to type the slash command manually.
@@ -237,7 +237,7 @@ Rules that never change across any team:
 ## Skill File Structure
 
 ```
-~/.claude/skills/create-agent-team/
+~/.claude/skills/team-builder/
 ├── SKILL.md              # Main instructions (the 5 phases)
 ├── HOW-TO-USE.md         # This file
 ├── reference.md          # Structural patterns and quality bar

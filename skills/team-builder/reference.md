@@ -1,6 +1,6 @@
 # Reference: Agent Team Structure and Patterns
 
-This file is loaded by the create-agent-team skill as architectural reference.
+This file is loaded by the team-builder skill as architectural reference.
 It describes the patterns, conventions, and quality bar to follow when generating a new team.
 
 ---
