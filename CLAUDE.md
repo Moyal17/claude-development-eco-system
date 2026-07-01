@@ -2,7 +2,7 @@
 
 You are operating inside the **claude-development-eco-system** toolkit. The user is building or maintaining a self-contained Claude Code ecosystem for dev teams.
 
-## v0.3.0 structure (3 layers)
+## Structure (3 layers)
 
 **Layer 1 — Knowledge skills** (auto-activate, no slash command). Live under `skills/knowledge/`. Edit them when refining auto-activation triggers, anti-rationalization tables, or composition guidance with the rest of the eco-system.
 - `context-engineering` — what to load, when, trust levels

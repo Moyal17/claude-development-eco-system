@@ -39,7 +39,7 @@ In any repo where the team wants the ecosystem conventions to apply:
    cp ~/sourceControl/claude-development-eco-system/templates/.github/workflows/claude-pr-review.yml .github/workflows/
    cp ~/sourceControl/claude-development-eco-system/templates/.github/workflows/jira-on-merge.yml .github/workflows/
    ```
-   Then set the repo secrets per `~/sourceControl/claude-development-eco-system/skills/ready-for-review/references/github-actions-setup.md` (`ANTHROPIC_API_KEY`, `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`).
+   Then set the repo secrets (Settings → Secrets and variables → Actions) referenced by those workflow files: `ANTHROPIC_API_KEY`, `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`.
 4. Commit the result. The repo is now opted in.
 
 ## Updating
