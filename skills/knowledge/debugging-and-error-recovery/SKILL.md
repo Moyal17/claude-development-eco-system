@@ -1,13 +1,13 @@
 ---
 name: debugging-and-error-recovery
-description: Auto-activating skill that enforces systematic root-cause debugging — Reproduce → Localize → Reduce → Fix → Guard → Verify. Auto-fires when (1) tests fail after a code change, (2) the build breaks, (3) runtime behavior doesn't match expectations, (4) an error appears in logs or console, (5) something worked before and stopped working, (6) /feature's Implementor phase hits an unexpected failure. Composes with /feature (when the Implementor phase fails, this skill takes over before scope creep) and the dev team's Implementor and Wiring Expert roles. The "stop guessing, start triaging" skill.
+description: Auto-activating skill that enforces systematic root-cause debugging — Reproduce → Localize → Reduce → Fix → Guard → Verify. Auto-fires when (1) tests fail after a code change, (2) the build breaks, (3) runtime behavior doesn't match expectations, (4) an error appears in logs or console, (5) something worked before and stopped working, (6) the Implementor role hits an unexpected failure. Composes with the dev team's Implementor and Wiring Expert roles — when the build phase fails, this skill takes over before scope creep. The "stop guessing, start triaging" skill.
 ---
 
 # Debugging and Error Recovery
 
 ## How this composes with the eco-system
 
-Auto-activating, no slash command. The moment any other skill encounters a failing test, broken build, or unexpected error, this skill's process applies. Inside `/feature`'s build phase, when the Implementor's tests fail, the skill switches to triage mode — no new features, no scope expansion, until the failure is understood and guarded against. Any root-cause hypothesis must be validated against the Reproduce → Localize → Reduce steps below before the fix is finalized.
+Auto-activating, no slash command. The moment any other skill encounters a failing test, broken build, or unexpected error, this skill's process applies. During the dev team's build phase, when the Implementor's tests fail, the skill switches to triage mode — no new features, no scope expansion, until the failure is understood and guarded against. Any root-cause hypothesis must be validated against the Reproduce → Localize → Reduce steps below before the fix is finalized.
 
 ## Overview
 

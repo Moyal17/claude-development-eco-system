@@ -5,9 +5,8 @@ status: draft | approved | shipped | archived
 created: YYYY-MM-DD
 last-updated: YYYY-MM-DD
 owner: <user>
-# Stamped by /plan at approval (Stage 4.4); used by /done for actual-hours calc
+# Stamped by /plan at approval (Stage 4.4)
 # started_at: <ISO timestamp>
-# Stamped by /done when the user closes the plan
 # done_at: <ISO timestamp>
 # actual_hours: <number>
 ---

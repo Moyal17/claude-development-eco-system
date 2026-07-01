@@ -1,6 +1,6 @@
 ---
 name: task-timing
-description: Stamp start/end timestamps on every TaskCreate/TaskUpdate transition in the dev-team workflow (Architect → Implementor → Code Reviewer → Wiring Expert) and emit a mini timing report when all tasks close. Auto-fires whenever a task lifecycle is being driven by /dev-roles, /run-dev-team, or /feature — anything that uses TaskCreate/TaskUpdate to track gate progress. Reports task name, total elapsed wall-clock, and estimate vs actual when an approved plan exists.
+description: Stamp start/end timestamps on every TaskCreate/TaskUpdate transition in the dev-team workflow (Architect → Implementor → Code Reviewer → Wiring Expert) and emit a mini timing report when all tasks close. Auto-fires whenever a task lifecycle is being driven by /dev-roles or /run-dev-team — anything that uses TaskCreate/TaskUpdate to track gate progress. Reports task name, total elapsed wall-clock, and estimate vs actual when an approved plan exists.
 allowed-tools: TaskCreate, TaskUpdate, TaskList, TaskGet, Read, Write
 ---
 
@@ -14,7 +14,6 @@ This skill is active whenever you are running the gate workflow through `TaskCre
 
 - `/dev-roles` (any mode)
 - `/run-dev-team`
-- `/feature` Phase E (build + review)
 - Any project where role-switching is auto-activated by `CLAUDE.md` and you are using `TaskCreate`/`TaskUpdate` to track gates
 
 If the workflow is *not* using `TaskCreate`/`TaskUpdate` (e.g. a tiny one-off edit), do nothing.
@@ -32,7 +31,7 @@ task_id | title | started_at | ended_at | elapsed | estimate_hours | actual_hour
 - `started_at` — ISO timestamp of the moment the task is created (TaskCreate call)
 - `ended_at` — ISO timestamp of the moment the CTO marks the task `TASK_DONE` (the final TaskUpdate that closes it after both gates approved)
 - `elapsed` — `ended_at - started_at` rendered as `Xh Ym` or `Xm Ys`
-- `estimate_hours` — pulled from the approved plan if one exists (Implementor Phase 2 plan, or `/feature` Phase C plan file frontmatter). If no estimate is on record, write `—`
+- `estimate_hours` — pulled from the approved plan if one exists (Implementor Phase 2 plan, or plan-file frontmatter `estimated_hours`). If no estimate is on record, write `—`
 - `actual_hours` — `elapsed` rendered as decimal hours to one place (e.g. `0.4h`, `1.7h`)
 - `result` — `done` | `abandoned` | `escalated` (after 3 rejection cycles)
 
@@ -49,7 +48,7 @@ Concretely:
 
 ## When to emit the report
 
-Print the report **once**, at the very end of the workflow, after every task is in a terminal state (`done` / `abandoned` / `escalated`). For `/dev-roles full`, this is right before your final summary in Step 3. For `/feature`, this is right before the Phase G handoff.
+Print the report **once**, at the very end of the workflow, after every task is in a terminal state (`done` / `abandoned` / `escalated`). For `/dev-roles full`, this is right before your final summary in Step 3.
 
 ## Report format
 
@@ -91,8 +90,7 @@ Rules:
 
 ## Composition with other skills
 
-- Composes with `/feature` — the Phase G handoff already prints a summary; append the timing table just before it.
-- Composes with `/done` — `/done` records actual hours into the plan frontmatter and the calibration log. This skill's report is the in-conversation version; `/done` is the durable version. They are not redundant — the report is what the user reads now, `/done` is what trains the team's velocity over time.
+- Composes with `/run-dev-team` — append the timing table just before the final orchestrator summary.
 - Does NOT compose with `/code-review` — it doesn't drive a task lifecycle.
 
 ## Examples
@@ -107,7 +105,7 @@ Rules:
 | T1: Add rate limiter to /api/upload | 41m | 0.5h | 0.7h | ✓ done |
 ```
 
-**`/feature add saved-search feature`** — three CTO-decomposed tasks. After Phase E closes the last one, before Phase G:
+**`/run-dev-team add saved-search feature`** — three CTO-decomposed tasks. After the last one closes, before the orchestrator summary:
 
 ```
 ### Task timing

@@ -25,8 +25,6 @@ cd ~/sourceControl/claude-development-eco-system && ./install.sh
 | `/remotion-product-demo` | Remotion-specific workflow for building product demo videos — scene structure, timing, branding, and delivery checklist. |
 | `/team-builder` | Build and configure Claude Code agent teams — define roles, write prompts, wire team.json, and scaffold the folder structure. |
 | `/product-research-team` | Run the full product research workflow using the Elite Product Research Team — CPO decomposes brief, two researchers investigate in parallel, two PMs synthesize into a CPO-approved requirements doc. |
-| `/done` | Close-out a finished task — stamps `done_at` + `actual_hours`, appends a calibration row to the per-repo velocity log, archives the plan file. |
-| `/feature` | End-to-end feature loop (phases Frame → Map → Plan → Branch → Build → Ship → Review). Drives the 5-role gate workflow internally. Supports `--jira`, `--no-pr`, `--resume`. |
 | `/task-timing` | Auto-fires alongside any skill that drives `TaskCreate`/`TaskUpdate`. Stamps start/end on every gate transition, emits a markdown timing table (task → elapsed → estimate vs actual) at workflow end. |
 | HeyGen skills | Multi-skill library for HeyGen AI video — prompt-based creation, avatar/scene control (v2 API), visual-style design systems, TTS audio, video translation. Loaded via `@`-include in `~/sourceControl/CLAUDE.md`; individual sub-skills at `skills/heygen/skills/*/SKILL.md`. |
 

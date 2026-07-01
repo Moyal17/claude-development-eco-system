@@ -1,13 +1,13 @@
 ---
 name: context-engineering
-description: Auto-activating skill for optimizing what an AI agent sees, when it sees it, and how it's structured. Auto-fires when (1) starting a new session in an unfamiliar repo, (2) agent output quality starts degrading (wrong patterns, hallucinated APIs, ignoring conventions), (3) switching between major parts of a codebase, (4) setting up a new project for AI-assisted development, (5) the agent is not following project conventions, (6) /feature is running and needs to know which files to load. Composes with /feature (informs file selection per phase) and the dev team's role workflow (bounds each role's reading to relevant files only). The single highest-leverage knowledge skill in this ecosystem.
+description: Auto-activating skill for optimizing what an AI agent sees, when it sees it, and how it's structured. Auto-fires when (1) starting a new session in an unfamiliar repo, (2) agent output quality starts degrading (wrong patterns, hallucinated APIs, ignoring conventions), (3) switching between major parts of a codebase, (4) setting up a new project for AI-assisted development, (5) the agent is not following project conventions, (6) a dev-team role needs to know which files to load. Composes with the dev team's role workflow (bounds each role's reading to relevant files only). The single highest-leverage knowledge skill in this ecosystem.
 ---
 
 # Context Engineering
 
 ## How this composes with the eco-system
 
-This skill is **auto-activating** — there is no `/context-engineering` slash command. It loads on session start in unfamiliar repos and during any other skill that needs to decide what context to include. It is the foundation for `/feature` (each internal phase uses the context hierarchy below to bound its file selection) and the dev team's role workflow (each role's reading is governed by Level 3 trust rules so the work is grounded in real code, not memory). When in doubt about how much context to load, read this file.
+This skill is **auto-activating** — there is no `/context-engineering` slash command. It loads on session start in unfamiliar repos and during any other skill that needs to decide what context to include. It is the foundation for the dev team's role workflow — each role uses the context hierarchy below to bound its file selection, and each role's reading is governed by Level 3 trust rules so the work is grounded in real code, not memory. When in doubt about how much context to load, read this file.
 
 ## Overview
 

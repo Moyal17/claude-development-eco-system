@@ -10,17 +10,13 @@ You are operating inside the **claude-development-eco-system** toolkit. The user
 - `debugging-and-error-recovery` — Reproduce → Localize → Reduce → Fix → Guard → Verify
 - `source-driven-development` — cite official docs
 
-**Layer 2 — Explicit commands** (6 total). Each has its own folder under `skills/`.
-- `feature/` — collapsed end-to-end loop (phases A–G internal)
+**Layer 2 — Explicit commands** (4 total). Each has its own folder under `skills/`.
 - `dev-roles/` — manual role-switching workflow with mode flags
 - `run-dev-team/` — multi-agent team orchestration (native Claude Code teams) of the same role prompts
 - `code-review/` — standalone 9-dim review
 - `ui-ux-pro-max/` — UI/UX design intelligence (styles, palettes, fonts, stacks)
-- `done/` — close-out
 
-**Layer 3 — Dev team roles** at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/`. **NEVER MODIFIED** by any skill in this eco-system. They are the binding contract for `/feature` Phase E and `/dev-roles`.
-
-**Removed in v0.3.0:** intake, scope, research, plan, jira-sync, start-dev, ready-for-review, address-review — their logic lives inside `/feature` Phases A–G. No archive folder is kept; the legacy is deleted.
+**Layer 3 — Dev team roles** at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/`. **NEVER MODIFIED** by any skill in this eco-system. They are the binding contract for `/dev-roles` and `/run-dev-team`.
 
 ## What this folder is
 
