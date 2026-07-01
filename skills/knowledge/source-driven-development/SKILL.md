@@ -1,13 +1,13 @@
 ---
 name: source-driven-development
-description: Auto-activating skill that grounds every framework decision in official documentation. Auto-fires when (1) about to write framework-specific code (React hooks, Django views, Express middleware, etc.), (2) a library API question comes up, (3) version-specific behavior matters, (4) /learn is exploring an unfamiliar stack, (5) /feature's Architect or Implementor phase is choosing a pattern, (6) reviewing or improving code that uses framework-specific patterns. Composes with /learn (highest value when ramping into an unknown stack — prevents hallucinated APIs in the architecture map), /feature (Architect cites docs in plan, Implementor cites docs in code), the dev team's Architect role (architecture decisions get source citations). The "stop hallucinating APIs" skill.
+description: Auto-activating skill that grounds every framework decision in official documentation. Auto-fires when (1) about to write framework-specific code (React hooks, Django views, Express middleware, etc.), (2) a library API question comes up, (3) version-specific behavior matters, (4) /feature's Architect or Implementor phase is choosing a pattern, (5) reviewing or improving code that uses framework-specific patterns. Composes with /feature (Architect cites docs in plan, Implementor cites docs in code) and the dev team's Architect role (architecture decisions get source citations). The "stop hallucinating APIs" skill.
 ---
 
 # Source-Driven Development
 
 ## How this composes with the eco-system
 
-Auto-activating, no slash command. The most valuable when joining a new project — `/learn` leans on this skill so the architecture map and CLAUDE.md draft don't hallucinate API shapes for libraries the agent has only seen in stale training data. Inside `/feature`, the Architect's plan should cite official docs for any non-trivial framework decision, and the Implementor's code should carry source-citation comments for anything beyond trivial logic. Inside `/quick-fix`, the joint scan must cite docs when the patch shape relies on framework-specific behavior (deprecation, changed API signature, etc.).
+Auto-activating, no slash command. The most valuable when joining a new project — it keeps the architecture map and CLAUDE.md draft from hallucinating API shapes for libraries the agent has only seen in stale training data. Inside `/feature`, the Architect's plan should cite official docs for any non-trivial framework decision, and the Implementor's code should carry source-citation comments for anything beyond trivial logic. Any patch that relies on framework-specific behavior (deprecation, changed API signature, etc.) must cite docs.
 
 ## Overview
 

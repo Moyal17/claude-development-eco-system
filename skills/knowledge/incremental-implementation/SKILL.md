@@ -1,13 +1,13 @@
 ---
 name: incremental-implementation
-description: Auto-activating skill that enforces thin vertical slices instead of big-bang implementations. Auto-fires when (1) any change touches more than one file, (2) the agent is about to write more than ~100 lines without testing, (3) implementing a new feature from a task breakdown, (4) refactoring existing code, (5) /feature is in its Implementor phase, (6) /quick-fix is applying a multi-file patch. Composes with /feature (governs the Implementor phase — enforces ~100-line slices, test after each), /quick-fix (caps the patch at one slice with one regression test), the dev team Implementor role (the Phase 3 build is structured as slices, not one big drop). The discipline that prevents 1500-line PRs.
+description: Auto-activating skill that enforces thin vertical slices instead of big-bang implementations. Auto-fires when (1) any change touches more than one file, (2) the agent is about to write more than ~100 lines without testing, (3) implementing a new feature from a task breakdown, (4) refactoring existing code, (5) /feature is in its Implementor phase. Composes with /feature (governs the Implementor phase — enforces ~100-line slices, test after each) and the dev team Implementor role (the Phase 3 build is structured as slices, not one big drop). The discipline that prevents 1500-line PRs.
 ---
 
 # Incremental Implementation
 
 ## How this composes with the eco-system
 
-Auto-activating, no slash command. This skill governs **how** the Implementor role actually writes code. Whenever `/feature` enters its build phase, or `/quick-fix` applies its patch, this skill's rules apply: vertical slices, test-after-each, ~100-line cap before verification, scope discipline. The dev team's Implementor role prompt at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md` describes *what* to do; this skill describes *how to size the work* so reviewers can review it and so bugs surface early.
+Auto-activating, no slash command. This skill governs **how** the Implementor role actually writes code. Whenever `/feature` enters its build phase, this skill's rules apply: vertical slices, test-after-each, ~100-line cap before verification, scope discipline. The dev team's Implementor role prompt at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/implementor.md` describes *what* to do; this skill describes *how to size the work* so reviewers can review it and so bugs surface early.
 
 ## Overview
 

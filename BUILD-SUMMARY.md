@@ -9,9 +9,8 @@
 | Change | Detail |
 |---|---|
 | Removed 8 legacy commands | `/intake`, `/scope`, `/research`, `/plan`, `/jira-sync`, `/start-dev`, `/ready-for-review`, `/address-review` — folded into `/feature` (internal phases A–G) and **deleted entirely**, no archive folder kept. |
-| Kept `/dev-roles` | Standalone manual role-switching workflow with mode flags (`full`, `plan-only`, `review-only`, `architect-consult`, custom subset). The flexible middle-ground between `/quick-fix` and `/feature`. |
+| Kept `/dev-roles` | Standalone manual role-switching workflow with mode flags (`full`, `plan-only`, `review-only`, `architect-consult`, custom subset). The flexible middle-ground for changes that need the role gate without `/feature`'s ceremony. |
 | Kept `/code-review` | Standalone 9-dim diff review. The eco-system version is now the authoritative copy at `~/.claude/skills/code-review` (replacing the prior independent folder). |
-| New `/learn` | Multi-session onboarding skill. Builds architecture map, extracts conventions from PRs, identifies hot-spots, drafts project CLAUDE.md, runs trust audit. Read-only. |
 | New `/feature` | End-to-end loop in one command. Resume via `--resume <slug>` (state in plan-file frontmatter). Flags: `--jira KEY`, `--no-pr`, `--mode=fast`. |
 | Knowledge skills | Ported 4 from addyosmani: `context-engineering`, `incremental-implementation`, `debugging-and-error-recovery`, `source-driven-development`. Auto-activate, no slash command. Live under `skills/knowledge/`. |
 | Personal CLAUDE.md | New `templates/personal-claude-md.template` → installed to `~/.claude/CLAUDE.md` (only if missing). Captures durable working-style preferences. |
@@ -19,8 +18,8 @@
 | Dev team roles | **UNCHANGED.** All 5 prompts at `~/sourceControl/claude-development-eco-system/teams/agent-team/prompts/` remain the binding contract. Per user constraint. |
 | Methodology docs | Unchanged. The WHY behind each stage is still valid; only the command surface collapsed. |
 
-**Active skills (6 commands + 4 knowledge):**
-- Commands: `/learn`, `/feature`, `/quick-fix`, `/dev-roles`, `/code-review`, `/done`
+**Active skills (4 commands + 4 knowledge):**
+- Commands: `/feature`, `/dev-roles`, `/code-review`, `/done`
 - Knowledge (auto-activating): `context-engineering`, `incremental-implementation`, `debugging-and-error-recovery`, `source-driven-development`
 
 **Removed (deleted, not archived):** intake, scope, research, plan, jira-sync, start-dev, ready-for-review, address-review. Their logic lives inside `/feature` Phases A–G.

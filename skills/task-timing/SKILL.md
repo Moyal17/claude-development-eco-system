@@ -1,6 +1,6 @@
 ---
 name: task-timing
-description: Stamp start/end timestamps on every TaskCreate/TaskUpdate transition in the dev-team workflow (Architect → Implementor → Code Reviewer → Wiring Expert) and emit a mini timing report when all tasks close. Auto-fires whenever a task lifecycle is being driven by /dev-roles, /run-dev-team, /feature, or /quick-fix — anything that uses TaskCreate/TaskUpdate to track gate progress. Reports task name, total elapsed wall-clock, and estimate vs actual when an approved plan exists.
+description: Stamp start/end timestamps on every TaskCreate/TaskUpdate transition in the dev-team workflow (Architect → Implementor → Code Reviewer → Wiring Expert) and emit a mini timing report when all tasks close. Auto-fires whenever a task lifecycle is being driven by /dev-roles, /run-dev-team, or /feature — anything that uses TaskCreate/TaskUpdate to track gate progress. Reports task name, total elapsed wall-clock, and estimate vs actual when an approved plan exists.
 allowed-tools: TaskCreate, TaskUpdate, TaskList, TaskGet, Read, Write
 ---
 
@@ -15,7 +15,6 @@ This skill is active whenever you are running the gate workflow through `TaskCre
 - `/dev-roles` (any mode)
 - `/run-dev-team`
 - `/feature` Phase E (build + review)
-- `/quick-fix` (the compressed loop)
 - Any project where role-switching is auto-activated by `CLAUDE.md` and you are using `TaskCreate`/`TaskUpdate` to track gates
 
 If the workflow is *not* using `TaskCreate`/`TaskUpdate` (e.g. a tiny one-off edit), do nothing.
@@ -50,7 +49,7 @@ Concretely:
 
 ## When to emit the report
 
-Print the report **once**, at the very end of the workflow, after every task is in a terminal state (`done` / `abandoned` / `escalated`). For `/dev-roles full`, this is right before your final summary in Step 3. For `/feature`, this is right before the Phase G handoff. For `/quick-fix`, this is right before the merge-ready summary.
+Print the report **once**, at the very end of the workflow, after every task is in a terminal state (`done` / `abandoned` / `escalated`). For `/dev-roles full`, this is right before your final summary in Step 3. For `/feature`, this is right before the Phase G handoff.
 
 ## Report format
 
@@ -85,7 +84,7 @@ Rules:
 
 ## Edge cases
 
-- **Single-task workflow** (most `/quick-fix` runs): still emit the table — one row is fine.
+- **Single-task workflow** (e.g. a `/dev-roles full` run with one task): still emit the table — one row is fine.
 - **Workflow aborted by user** mid-flight: emit the report for whatever tasks closed, mark the in-flight one as `abandoned` with elapsed-so-far.
 - **No plan / no estimate** (e.g. `/dev-roles architect-consult`): skip the report entirely. Architect-consult mode has no task lifecycle.
 - **Multiple TaskUpdate calls** between create and done (status moves through PLAN_IN_PROGRESS → PLAN_UNDER_REVIEW → IMPLEMENTATION_IN_PROGRESS → ...): only the first (`TaskCreate`) and the last (terminal `TaskUpdate`) matter for timing. Ignore the intermediate ones for the report.
@@ -94,7 +93,7 @@ Rules:
 
 - Composes with `/feature` — the Phase G handoff already prints a summary; append the timing table just before it.
 - Composes with `/done` — `/done` records actual hours into the plan frontmatter and the calibration log. This skill's report is the in-conversation version; `/done` is the durable version. They are not redundant — the report is what the user reads now, `/done` is what trains the team's velocity over time.
-- Does NOT compose with `/code-review` or `/learn` — those don't drive a task lifecycle.
+- Does NOT compose with `/code-review` — it doesn't drive a task lifecycle.
 
 ## Examples
 

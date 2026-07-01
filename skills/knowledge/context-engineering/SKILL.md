@@ -1,13 +1,13 @@
 ---
 name: context-engineering
-description: Auto-activating skill for optimizing what an AI agent sees, when it sees it, and how it's structured. Auto-fires when (1) starting a new session in an unfamiliar repo, (2) agent output quality starts degrading (wrong patterns, hallucinated APIs, ignoring conventions), (3) switching between major parts of a codebase, (4) setting up a new project for AI-assisted development, (5) the agent is not following project conventions, (6) /learn or /feature is running and needs to know which files to load. Composes with /learn (its backbone), /feature (informs file selection per phase), /quick-fix (bounds the joint scan to relevant files only). The single highest-leverage knowledge skill in this ecosystem.
+description: Auto-activating skill for optimizing what an AI agent sees, when it sees it, and how it's structured. Auto-fires when (1) starting a new session in an unfamiliar repo, (2) agent output quality starts degrading (wrong patterns, hallucinated APIs, ignoring conventions), (3) switching between major parts of a codebase, (4) setting up a new project for AI-assisted development, (5) the agent is not following project conventions, (6) /feature is running and needs to know which files to load. Composes with /feature (informs file selection per phase) and the dev team's role workflow (bounds each role's reading to relevant files only). The single highest-leverage knowledge skill in this ecosystem.
 ---
 
 # Context Engineering
 
 ## How this composes with the eco-system
 
-This skill is **auto-activating** — there is no `/context-engineering` slash command. It loads on session start in unfamiliar repos and during any other skill that needs to decide what context to include. It is the foundation for `/learn` (the onboarding skill leans on every pattern here), `/feature` (each internal phase uses the context hierarchy below to bound its file selection), and `/quick-fix` (the joint scan is governed by Level 3 trust rules so the patch shape is grounded in real code, not memory). When in doubt about how much context to load, read this file.
+This skill is **auto-activating** — there is no `/context-engineering` slash command. It loads on session start in unfamiliar repos and during any other skill that needs to decide what context to include. It is the foundation for `/feature` (each internal phase uses the context hierarchy below to bound its file selection) and the dev team's role workflow (each role's reading is governed by Level 3 trust rules so the work is grounded in real code, not memory). When in doubt about how much context to load, read this file.
 
 ## Overview
 
@@ -85,7 +85,7 @@ Load the relevant spec section when starting a feature. Don't load the entire sp
 
 **Wasteful:** "Here's our entire 5000-word spec: [full spec]" (when only working on auth)
 
-For repos that have run `/learn`, the artifacts under `docs/onboarding/` (architecture.md, conventions.md, hot-spots.md) are the durable Level-2 context — load only the section relevant to the current task.
+For repos that keep onboarding notes under `docs/onboarding/` (architecture.md, conventions.md, hot-spots.md), those are the durable Level-2 context — load only the section relevant to the current task.
 
 ### Level 3: Relevant Source Files
 
@@ -177,7 +177,7 @@ Validation, error handling, database utilities.
 Key files: validation.ts, errors.ts, db.ts
 ```
 
-Load only the relevant section when working on a specific area. The `/learn` skill produces exactly this kind of map at `docs/onboarding/architecture.md`.
+Load only the relevant section when working on a specific area. A map like this is best kept at `docs/onboarding/architecture.md`.
 
 ## Confusion Management
 
